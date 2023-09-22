@@ -1,0 +1,5 @@
+<Simulation version="4.4.1">
+   <XMLScript Type="XMLScript">Simulation/BreastDuctSim.xml</XMLScript>
+   <PythonScript Type="PythonScript">Simulation/BreastDuctSim.py</PythonScript>
+   <Resource Type="Python">Simulation/BreastDuctSimSteppables.py</Resource>
+</Simulation>

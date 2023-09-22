@@ -1,0 +1,176 @@
+<CompuCell3D Revision="0" Version="4.4.1">
+   
+   <Metadata>
+      
+      <!-- Basic properties simulation -->
+      <NumberOfProcessors>1</NumberOfProcessors>
+      <DebugOutputFrequency>100</DebugOutputFrequency>
+      <!-- <NonParallelModule Name="Potts"/> -->
+   </Metadata>
+   
+   <Potts>
+      
+      <!-- Basic properties of CPM (GGH) algorithm -->
+      <Dimensions x="256" y="256" z="1"/>
+      <Steps>100000</Steps>
+      <Temperature>10.0</Temperature>
+      <NeighborOrder>1</NeighborOrder>
+      <Boundary_x>Periodic</Boundary_x>
+      <Boundary_y>Periodic</Boundary_y>
+   </Potts>
+   
+   <Plugin Name="CellType">
+      
+      <!-- Listing all cell types in the simulation -->
+      <CellType TypeId="0" TypeName="Medium"/>
+      <CellType TypeId="1" TypeName="LUM"/>
+      <CellType TypeId="2" TypeName="EPI"/>
+      <CellType TypeId="3" TypeName="MYO"/>
+      <CellType TypeId="4" TypeName="MEM"/>
+      <CellType TypeId="5" TypeName="MAC_A"/>
+      <CellType TypeId="6" TypeName="MAC_B"/>
+   </Plugin>
+   
+   <Plugin Name="Volume"/>
+   
+   <Plugin Name="Surface"/>
+   
+   <Plugin Name="ExternalPotential">
+      
+      <!-- External force applied to cell. Each cell type has different force. -->
+      <!-- For more flexible specification of the constraint (done in Python) please use ExternalPotential plugin without specifying per-type parameters -->
+      <!-- Algorithm options are: PixelBased, CenterOfMassBased -->
+      <Algorithm>PixelBased</Algorithm>
+      <ExternalPotentialParameters CellType="LUM" x="-0.5" y="0.0" z="0.0"/>
+      <ExternalPotentialParameters CellType="EPI" x="-0.5" y="0.0" z="0.0"/>
+      <ExternalPotentialParameters CellType="MYO" x="-0.5" y="0.0" z="0.0"/>
+      <ExternalPotentialParameters CellType="MEM" x="-0.5" y="0.0" z="0.0"/>
+      <ExternalPotentialParameters CellType="MAC_A" x="-0.5" y="0.0" z="0.0"/>
+      <ExternalPotentialParameters CellType="MAC_B" x="-0.5" y="0.0" z="0.0"/>
+   </Plugin>
+   
+   <Plugin Name="CenterOfMass">
+      
+      <!-- Module tracking center of mass of each cell -->
+   </Plugin>
+   
+   <Plugin Name="NeighborTracker">
+      
+      <!-- Module tracking neighboring cells of each cell -->
+   </Plugin>
+   
+   <Plugin Name="PixelTracker">
+      
+      <!-- Module tracking pixels of each cell -->
+   </Plugin>
+   
+   <Plugin Name="Contact">
+      <!-- Specification of adhesion energies -->
+      <Energy Type1="Medium" Type2="Medium">10.0</Energy>
+      <Energy Type1="Medium" Type2="LUM">10.0</Energy>
+      <Energy Type1="Medium" Type2="EPI">10.0</Energy>
+      <Energy Type1="Medium" Type2="MYO">10.0</Energy>
+      <Energy Type1="Medium" Type2="MEM">10.0</Energy>
+      <Energy Type1="Medium" Type2="MAC_A">10.0</Energy>
+      <Energy Type1="Medium" Type2="MAC_B">10.0</Energy>
+      <Energy Type1="LUM" Type2="LUM">10.0</Energy>
+      <Energy Type1="LUM" Type2="EPI">10.0</Energy>
+      <Energy Type1="LUM" Type2="MYO">10.0</Energy>
+      <Energy Type1="LUM" Type2="MEM">10.0</Energy>
+      <Energy Type1="LUM" Type2="MAC_A">10.0</Energy>
+      <Energy Type1="LUM" Type2="MAC_B">10.0</Energy>
+      <Energy Type1="EPI" Type2="EPI">10.0</Energy>
+      <Energy Type1="EPI" Type2="MYO">10.0</Energy>
+      <Energy Type1="EPI" Type2="MEM">10.0</Energy>
+      <Energy Type1="EPI" Type2="MAC_A">10.0</Energy>
+      <Energy Type1="EPI" Type2="MAC_B">10.0</Energy>
+      <Energy Type1="MYO" Type2="MYO">10.0</Energy>
+      <Energy Type1="MYO" Type2="MEM">10.0</Energy>
+      <Energy Type1="MYO" Type2="MAC_A">10.0</Energy>
+      <Energy Type1="MYO" Type2="MAC_B">10.0</Energy>
+      <Energy Type1="MEM" Type2="MEM">10.0</Energy>
+      <Energy Type1="MEM" Type2="MAC_A">10.0</Energy>
+      <Energy Type1="MEM" Type2="MAC_B">10.0</Energy>
+      <Energy Type1="MAC_A" Type2="MAC_A">10.0</Energy>
+      <Energy Type1="MAC_A" Type2="MAC_B">10.0</Energy>
+      <Energy Type1="MAC_B" Type2="MAC_B">10.0</Energy>
+      <NeighborOrder>4</NeighborOrder>
+   </Plugin>
+   
+   <Plugin Name="Chemotaxis">
+      
+      <!-- You may repeat ChemicalField element for each chemical field declared in the PDE solvers -->
+      <!-- Specification of chemotaxis properties of select cell types. -->
+      <ChemicalField Name="CHEM">
+         <ChemotaxisByType Lambda="0.0" Type="MEM"/>
+      </ChemicalField>
+   </Plugin>
+   
+   <Steppable Type="DiffusionSolverFE">
+      
+      <!-- Specification of PDE solvers -->
+      <DiffusionField Name="CHEM">
+         <DiffusionData>
+            <FieldName>CHEM</FieldName>
+            <GlobalDiffusionConstant>0.1</GlobalDiffusionConstant>
+            <GlobalDecayConstant>1e-05</GlobalDecayConstant>
+            <!-- Additional options are: -->
+            <!-- <InitialConcentrationExpression>x*y</InitialConcentrationExpression> -->
+            <!-- <ConcentrationFileName>INITIAL CONCENTRATION FIELD - typically a file with path Simulation/NAME_OF_THE_FILE.txt</ConcentrationFileName> -->
+            <DiffusionCoefficient CellType="LUM">0.1</DiffusionCoefficient>
+            <DiffusionCoefficient CellType="EPI">0.1</DiffusionCoefficient>
+            <DiffusionCoefficient CellType="MYO">0.1</DiffusionCoefficient>
+            <DiffusionCoefficient CellType="MEM">0.1</DiffusionCoefficient>
+            <DiffusionCoefficient CellType="MAC_A">0.1</DiffusionCoefficient>
+            <DiffusionCoefficient CellType="MAC_B">0.1</DiffusionCoefficient>
+            <DecayCoefficient CellType="LUM">0.0001</DecayCoefficient>
+            <DecayCoefficient CellType="EPI">0.0001</DecayCoefficient>
+            <DecayCoefficient CellType="MYO">0.0001</DecayCoefficient>
+            <DecayCoefficient CellType="MEM">0.0001</DecayCoefficient>
+            <DecayCoefficient CellType="MAC_A">0.0001</DecayCoefficient>
+            <DecayCoefficient CellType="MAC_B">0.0001</DecayCoefficient>
+         </DiffusionData>
+         <SecretionData>
+            <!-- When secretion is defined inside DissufionSolverFE all secretion constants are scaled automaticaly to account for the extra calls to the diffusion step when handling large diffusion constants -->
+            
+            <!-- Uniform secretion Definition -->
+            <Secretion Type="LUM">0.1</Secretion>
+            <Secretion Type="EPI">0.1</Secretion>
+            <Secretion Type="MYO">0.1</Secretion>
+            <Secretion Type="MEM">0.1</Secretion>
+            <Secretion Type="MAC_A">0.1</Secretion>
+            <Secretion Type="MAC_B">0.1</Secretion>
+            <!-- <SecretionOnContact SecreteOnContactWith="LUM,EPI,MYO,MEM,MAC_A,MAC_B" Type="MAC_B">0.2</SecretionOnContact> -->
+            <!-- <ConstantConcentration Type="MAC_B">0.1</ConstantConcentration> -->
+         </SecretionData>
+         <BoundaryConditions>
+            <Plane Axis="X">
+               <ConstantValue PlanePosition="Min" Value="10.0"/>
+               <ConstantValue PlanePosition="Max" Value="5.0"/>
+               <!-- Other options are (examples): -->
+               <!-- <Periodic/> -->
+               <!-- <ConstantDerivative PlanePosition="Min" Value="10.0"/> -->
+            </Plane>
+            <Plane Axis="Y">
+               <ConstantDerivative PlanePosition="Min" Value="10.0"/>
+               <ConstantDerivative PlanePosition="Max" Value="5.0"/>
+               <!-- Other options are (examples): -->
+               <!-- <Periodic/> -->
+               <!-- <ConstantValue PlanePosition="Min" Value="10.0"/> -->
+            </Plane>
+         </BoundaryConditions>
+      </DiffusionField>
+   </Steppable>
+   
+   <Steppable Type="UniformInitializer">
+      
+      <!-- Initial layout of cells in the form of rectangular slab -->
+      <Region>
+         <BoxMin x="51" y="51" z="0"/>
+         <BoxMax x="204" y="204" z="1"/>
+         <Gap>0</Gap>
+         <Width>7</Width>
+         <Types>LUM,EPI,MYO,MEM,MAC_A,MAC_B</Types>
+      </Region>
+   </Steppable>
+</CompuCell3D>
