@@ -71,23 +71,23 @@
    <Plugin Name="Contact">
       <!-- Specification of adhesion energies -->
       <Energy Type1="Medium" Type2="Medium">10.0</Energy>
-      <Energy Type1="Medium" Type2="LUM">10.0</Energy>
-      <Energy Type1="Medium" Type2="EPI">10.0</Energy>
-      <Energy Type1="Medium" Type2="MYO">10.0</Energy>
+      <Energy Type1="Medium" Type2="LUM">800.0</Energy>
+      <Energy Type1="Medium" Type2="EPI">70.0</Energy>
+      <Energy Type1="Medium" Type2="MYO">30.0</Energy>
       <Energy Type1="Medium" Type2="MEM">10.0</Energy>
       <Energy Type1="Medium" Type2="MAC_A">10.0</Energy>
       <Energy Type1="Medium" Type2="MAC_B">10.0</Energy>
       <Energy Type1="LUM" Type2="LUM">10.0</Energy>
       <Energy Type1="LUM" Type2="EPI">10.0</Energy>
-      <Energy Type1="LUM" Type2="MYO">10.0</Energy>
-      <Energy Type1="LUM" Type2="MEM">10.0</Energy>
-      <Energy Type1="LUM" Type2="MAC_A">10.0</Energy>
-      <Energy Type1="LUM" Type2="MAC_B">10.0</Energy>
+      <Energy Type1="LUM" Type2="MYO">70.0</Energy>
+      <Energy Type1="LUM" Type2="MEM">80.0</Energy>
+      <Energy Type1="LUM" Type2="MAC_A">80.0</Energy>
+      <Energy Type1="LUM" Type2="MAC_B">80.0</Energy>
       <Energy Type1="EPI" Type2="EPI">10.0</Energy>
       <Energy Type1="EPI" Type2="MYO">10.0</Energy>
-      <Energy Type1="EPI" Type2="MEM">10.0</Energy>
-      <Energy Type1="EPI" Type2="MAC_A">10.0</Energy>
-      <Energy Type1="EPI" Type2="MAC_B">10.0</Energy>
+      <Energy Type1="EPI" Type2="MEM">50.0</Energy>
+      <Energy Type1="EPI" Type2="MAC_A">50.0</Energy>
+      <Energy Type1="EPI" Type2="MAC_B">50.0</Energy>
       <Energy Type1="MYO" Type2="MYO">10.0</Energy>
       <Energy Type1="MYO" Type2="MEM">10.0</Energy>
       <Energy Type1="MYO" Type2="MAC_A">10.0</Energy>
@@ -100,6 +100,10 @@
       <Energy Type1="MAC_B" Type2="MAC_B">10.0</Energy>
       <NeighborOrder>4</NeighborOrder>
    </Plugin>
+   
+   <Plugin Name="GlobalBoundaryPixelTracker">
+    <NeighborOrder>1</NeighborOrder>
+  </Plugin>
    
    <Plugin Name="Chemotaxis">
       
