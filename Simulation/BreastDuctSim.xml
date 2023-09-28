@@ -71,33 +71,33 @@
    <Plugin Name="Contact">
       <!-- Specification of adhesion energies -->
       <Energy Type1="Medium" Type2="Medium">10.0</Energy>
-      <Energy Type1="Medium" Type2="LUM">10.0</Energy>
-      <Energy Type1="Medium" Type2="EPI">10.0</Energy>
-      <Energy Type1="Medium" Type2="MYO">10.0</Energy>
+      <Energy Type1="Medium" Type2="LUM">800.0</Energy>
+      <Energy Type1="Medium" Type2="EPI">70.0</Energy>
+      <Energy Type1="Medium" Type2="MYO">30.0</Energy>
       <Energy Type1="Medium" Type2="MEM">10.0</Energy>
-      <Energy Type1="Medium" Type2="MAC_A">10.0</Energy>
-      <Energy Type1="Medium" Type2="MAC_B">10.0</Energy>
+      <Energy Type1="Medium" Type2="MAC_A">300.0</Energy>
+      <Energy Type1="Medium" Type2="MAC_B">300.0</Energy>
       <Energy Type1="LUM" Type2="LUM">10.0</Energy>
       <Energy Type1="LUM" Type2="EPI">10.0</Energy>
-      <Energy Type1="LUM" Type2="MYO">10.0</Energy>
-      <Energy Type1="LUM" Type2="MEM">10.0</Energy>
-      <Energy Type1="LUM" Type2="MAC_A">10.0</Energy>
-      <Energy Type1="LUM" Type2="MAC_B">10.0</Energy>
+      <Energy Type1="LUM" Type2="MYO">70.0</Energy>
+      <Energy Type1="LUM" Type2="MEM">80.0</Energy>
+      <Energy Type1="LUM" Type2="MAC_A">15.0</Energy>
+      <Energy Type1="LUM" Type2="MAC_B">15.0</Energy>
       <Energy Type1="EPI" Type2="EPI">10.0</Energy>
       <Energy Type1="EPI" Type2="MYO">10.0</Energy>
-      <Energy Type1="EPI" Type2="MEM">10.0</Energy>
-      <Energy Type1="EPI" Type2="MAC_A">10.0</Energy>
-      <Energy Type1="EPI" Type2="MAC_B">10.0</Energy>
+      <Energy Type1="EPI" Type2="MEM">50.0</Energy>
+      <Energy Type1="EPI" Type2="MAC_A">2.0</Energy>
+      <Energy Type1="EPI" Type2="MAC_B">2.0</Energy>
       <Energy Type1="MYO" Type2="MYO">10.0</Energy>
       <Energy Type1="MYO" Type2="MEM">10.0</Energy>
-      <Energy Type1="MYO" Type2="MAC_A">10.0</Energy>
-      <Energy Type1="MYO" Type2="MAC_B">10.0</Energy>
+      <Energy Type1="MYO" Type2="MAC_A">20.0</Energy>
+      <Energy Type1="MYO" Type2="MAC_B">20.0</Energy>
       <Energy Type1="MEM" Type2="MEM">10.0</Energy>
-      <Energy Type1="MEM" Type2="MAC_A">10.0</Energy>
-      <Energy Type1="MEM" Type2="MAC_B">10.0</Energy>
+      <Energy Type1="MEM" Type2="MAC_A">20.0</Energy>
+      <Energy Type1="MEM" Type2="MAC_B">50.0</Energy>
       <Energy Type1="MAC_A" Type2="MAC_A">10.0</Energy>
-      <Energy Type1="MAC_A" Type2="MAC_B">10.0</Energy>
-      <Energy Type1="MAC_B" Type2="MAC_B">10.0</Energy>
+      <Energy Type1="MAC_A" Type2="MAC_B">1.0</Energy>
+      <Energy Type1="MAC_B" Type2="MAC_B">15.0</Energy>
       <NeighborOrder>4</NeighborOrder>
    </Plugin>
    
@@ -117,22 +117,10 @@
          <DiffusionData>
             <FieldName>CHEM</FieldName>
             <GlobalDiffusionConstant>0.1</GlobalDiffusionConstant>
-            <GlobalDecayConstant>1e-05</GlobalDecayConstant>
+            <GlobalDecayConstant>0</GlobalDecayConstant>
             <!-- Additional options are: -->
-            <!-- <InitialConcentrationExpression>x*y</InitialConcentrationExpression> -->
+            <InitialConcentrationExpression>1</InitialConcentrationExpression>
             <!-- <ConcentrationFileName>INITIAL CONCENTRATION FIELD - typically a file with path Simulation/NAME_OF_THE_FILE.txt</ConcentrationFileName> -->
-            <DiffusionCoefficient CellType="LUM">0.1</DiffusionCoefficient>
-            <DiffusionCoefficient CellType="EPI">0.1</DiffusionCoefficient>
-            <DiffusionCoefficient CellType="MYO">0.1</DiffusionCoefficient>
-            <DiffusionCoefficient CellType="MEM">0.1</DiffusionCoefficient>
-            <DiffusionCoefficient CellType="MAC_A">0.1</DiffusionCoefficient>
-            <DiffusionCoefficient CellType="MAC_B">0.1</DiffusionCoefficient>
-            <DecayCoefficient CellType="LUM">0.0001</DecayCoefficient>
-            <DecayCoefficient CellType="EPI">0.0001</DecayCoefficient>
-            <DecayCoefficient CellType="MYO">0.0001</DecayCoefficient>
-            <DecayCoefficient CellType="MEM">0.0001</DecayCoefficient>
-            <DecayCoefficient CellType="MAC_A">0.0001</DecayCoefficient>
-            <DecayCoefficient CellType="MAC_B">0.0001</DecayCoefficient>
          </DiffusionData>
          <SecretionData>
             <!-- When secretion is defined inside DissufionSolverFE all secretion constants are scaled automaticaly to account for the extra calls to the diffusion step when handling large diffusion constants -->
@@ -170,8 +158,8 @@
       
       <!-- Initial layout of cells in the form of rectangular slab -->
       <Region>
-         <BoxMin x="120" y="120" z="0"/>
-         <BoxMax x="129" y="129" z="1"/>
+         <BoxMin x="115" y="120" z="0"/>
+         <BoxMax x="124" y="129" z="1"/>
          <Gap>0</Gap>
          <Width>10</Width>
          <Types>LUM</Types>
@@ -184,29 +172,29 @@
          <Types>EPI</Types>
       </Region>
       <Region>
-         <BoxMin x="130" y="120" z="0"/>
-         <BoxMax x="139" y="129" z="1"/>
+         <BoxMin x="125" y="120" z="0"/>
+         <BoxMax x="134" y="129" z="1"/>
          <Gap>0</Gap>
          <Width>10</Width>
          <Types>MYO</Types>
       </Region>
       <Region>
-         <BoxMin x="130" y="130" z="0"/>
-         <BoxMax x="139" y="139" z="1"/>
+         <BoxMin x="135" y="120" z="0"/>
+         <BoxMax x="144" y="129" z="1"/>
          <Gap>0</Gap>
          <Width>10</Width>
          <Types>MEM</Types>
       </Region>
       <Region>
-         <BoxMin x="150" y="150" z="0"/>
-         <BoxMax x="159" y="159" z="1"/>
+         <BoxMin x="145" y="145" z="0"/>
+         <BoxMax x="153" y="153" z="1"/>
          <Gap>0</Gap>
          <Width>10</Width>
          <Types>MAC_A</Types>
       </Region>
       <Region>
-         <BoxMin x="150" y="150" z="0"/>
-         <BoxMax x="159" y="159" z="1"/>
+         <BoxMin x="130" y="130" z="0"/>
+         <BoxMax x="139" y="139" z="1"/>
          <Gap>0</Gap>
          <Width>10</Width>
          <Types>MAC_B</Types>
