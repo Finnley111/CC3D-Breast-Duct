@@ -27,139 +27,95 @@
       <CellType TypeId="2" TypeName="EPI"/>
       <CellType TypeId="3" TypeName="MYO"/>
       <CellType TypeId="4" TypeName="MEM"/>
-      <CellType TypeId="5" TypeName="MAC_A"/>
-      <CellType TypeId="6" TypeName="MAC_B"/>
+      <CellType TypeId="5" TypeName="MAC"/>
    </Plugin>
    
    <Plugin Name="Volume"/>
    
-   <Plugin Name="Surface"/>
-   
    <Plugin Name="ExternalPotential">
-      
-      <!-- External force applied to cell. Each cell type has different force. -->
-      <!-- For more flexible specification of the constraint (done in Python) please use ExternalPotential plugin without specifying per-type parameters -->
-      <!-- Algorithm options are: PixelBased, CenterOfMassBased -->
-      <!-- <Algorithm>PixelBased</Algorithm> -->
-      <!-- <ExternalPotentialParameters CellType="LUM" x="-0.5" y="0.0" z="0.0"/> -->
-      <!-- <ExternalPotentialParameters CellType="EPI" x="-0.5" y="0.0" z="0.0"/> -->
-      <!-- <ExternalPotentialParameters CellType="MYO" x="-0.5" y="0.0" z="0.0"/> -->
-      <!-- <ExternalPotentialParameters CellType="MEM" x="-0.5" y="0.0" z="0.0"/> -->
-      <!-- <ExternalPotentialParameters CellType="MAC_A" x="-0.5" y="0.0" z="0.0"/> -->
-      <!-- <ExternalPotentialParameters CellType="MAC_B" x="-0.5" y="0.0" z="0.0"/> -->
       
       <!-- External force applied to cell. Each cell has different force and force components have to be managed in Python. -->
       <!-- e.g. cell.lambdaVecX=0.5; cell.lambdaVecY=0.1 ; cell.lambdaVecZ=0.3; -->
       <Algorithm>PixelBased</Algorithm>
    </Plugin>
    
+   <Plugin Name="NeighborTracker">
+   
+        <!-- Module tracking neighboring cells of each cell -->
+    </Plugin>
+   
    <Plugin Name="CenterOfMass">
       
       <!-- Module tracking center of mass of each cell -->
    </Plugin>
    
-   <Plugin Name="NeighborTracker">
-      
-      <!-- Module tracking neighboring cells of each cell -->
-   </Plugin>
-   
-   <Plugin Name="PixelTracker">
-      
-      <!-- Module tracking pixels of each cell -->
-   </Plugin>
-   
    <Plugin Name="Contact">
-      <!-- Specification of adhesion energies -->
       <Energy Type1="Medium" Type2="Medium">10.0</Energy>
       <Energy Type1="Medium" Type2="LUM">800.0</Energy>
       <Energy Type1="Medium" Type2="EPI">70.0</Energy>
       <Energy Type1="Medium" Type2="MYO">30.0</Energy>
       <Energy Type1="Medium" Type2="MEM">10.0</Energy>
-      <Energy Type1="Medium" Type2="MAC_A">300.0</Energy>
-      <Energy Type1="Medium" Type2="MAC_B">300.0</Energy>
+      <Energy Type1="Medium" Type2="MAC">10.0</Energy>
       <Energy Type1="LUM" Type2="LUM">10.0</Energy>
       <Energy Type1="LUM" Type2="EPI">10.0</Energy>
       <Energy Type1="LUM" Type2="MYO">70.0</Energy>
       <Energy Type1="LUM" Type2="MEM">80.0</Energy>
-      <Energy Type1="LUM" Type2="MAC_A">15.0</Energy>
-      <Energy Type1="LUM" Type2="MAC_B">15.0</Energy>
+      <Energy Type1="LUM" Type2="MAC">80.0</Energy>
       <Energy Type1="EPI" Type2="EPI">10.0</Energy>
       <Energy Type1="EPI" Type2="MYO">10.0</Energy>
       <Energy Type1="EPI" Type2="MEM">50.0</Energy>
-      <Energy Type1="EPI" Type2="MAC_A">2.0</Energy>
-      <Energy Type1="EPI" Type2="MAC_B">2.0</Energy>
+      <Energy Type1="EPI" Type2="MAC">50.0</Energy>
       <Energy Type1="MYO" Type2="MYO">10.0</Energy>
       <Energy Type1="MYO" Type2="MEM">10.0</Energy>
-      <Energy Type1="MYO" Type2="MAC_A">20.0</Energy>
-      <Energy Type1="MYO" Type2="MAC_B">20.0</Energy>
+      <Energy Type1="MYO" Type2="MEM">10.0</Energy>
       <Energy Type1="MEM" Type2="MEM">10.0</Energy>
-      <Energy Type1="MEM" Type2="MAC_A">20.0</Energy>
-      <Energy Type1="MEM" Type2="MAC_B">50.0</Energy>
-      <Energy Type1="MAC_A" Type2="MAC_A">10.0</Energy>
-      <Energy Type1="MAC_A" Type2="MAC_B">1.0</Energy>
-      <Energy Type1="MAC_B" Type2="MAC_B">15.0</Energy>
+      <Energy Type1="MEM" Type2="MAC">10.0</Energy>
+      <Energy Type1="MAC" Type2="MAC">10.0</Energy>
       <NeighborOrder>4</NeighborOrder>
    </Plugin>
    
+   <Plugin Name="GlobalBoundaryPixelTracker">
+    <NeighborOrder>1</NeighborOrder>
+  </Plugin>
+  
    <Plugin Name="Chemotaxis">
       
-      <!-- You may repeat ChemicalField element for each chemical field declared in the PDE solvers -->
-      <!-- Specification of chemotaxis properties of select cell types. -->
-      <ChemicalField Name="CHEM">
-         <ChemotaxisByType Lambda="0.0" Type="MEM"/>
+      <!-- You may repeat ChemicalField element for each chemical field declared in the PDE solvers --> 
+
+
+      <!-- Specification of chemotaxis properties of select cell types. --> 
+
+
+      <ChemicalField Name="Chem">
+         <ChemotaxisByType Lambda="20.0" Type="EPI"/>
       </ChemicalField>
    </Plugin>
    
    <Steppable Type="DiffusionSolverFE">
       
-      <!-- Specification of PDE solvers -->
-      <DiffusionField Name="CHEM">
+      <!-- Specification of PDE solvers --> 
+
+
+      <DiffusionField Name="Chem">
          <DiffusionData>
-            <FieldName>CHEM</FieldName>
-            <GlobalDiffusionConstant>0.1</GlobalDiffusionConstant>
-            <GlobalDecayConstant>0</GlobalDecayConstant>
-            <!-- Additional options are: -->
-            <InitialConcentrationExpression>1</InitialConcentrationExpression>
-            <!-- <ConcentrationFileName>INITIAL CONCENTRATION FIELD - typically a file with path Simulation/NAME_OF_THE_FILE.txt</ConcentrationFileName> -->
-         </DiffusionData>
-         <SecretionData>
-            <!-- When secretion is defined inside DissufionSolverFE all secretion constants are scaled automaticaly to account for the extra calls to the diffusion step when handling large diffusion constants -->
-            
-            <!-- Uniform secretion Definition -->
-            <Secretion Type="LUM">0.1</Secretion>
-            <Secretion Type="EPI">0.1</Secretion>
-            <Secretion Type="MYO">0.1</Secretion>
-            <Secretion Type="MEM">0.1</Secretion>
-            <Secretion Type="MAC_A">0.1</Secretion>
-            <Secretion Type="MAC_B">0.1</Secretion>
-            <!-- <SecretionOnContact SecreteOnContactWith="LUM,EPI,MYO,MEM,MAC_A,MAC_B" Type="MAC_B">0.2</SecretionOnContact> -->
-            <!-- <ConstantConcentration Type="MAC_B">0.1</ConstantConcentration> -->
-         </SecretionData>
-         <BoundaryConditions>
-            <Plane Axis="X">
-               <ConstantValue PlanePosition="Min" Value="10.0"/>
-               <ConstantValue PlanePosition="Max" Value="5.0"/>
-               <!-- Other options are (examples): -->
-               <!-- <Periodic/> -->
-               <!-- <ConstantDerivative PlanePosition="Min" Value="10.0"/> -->
-            </Plane>
-            <Plane Axis="Y">
-               <ConstantDerivative PlanePosition="Min" Value="10.0"/>
-               <ConstantDerivative PlanePosition="Max" Value="5.0"/>
-               <!-- Other options are (examples): -->
-               <!-- <Periodic/> -->
-               <!-- <ConstantValue PlanePosition="Min" Value="10.0"/> -->
-            </Plane>
-         </BoundaryConditions>
+              <FieldName>Chem</FieldName>
+              <DiffusionConstant>0</DiffusionConstant>
+              <DecayConstant>0</DecayConstant>
+              <InitialConcentrationExpression>0</InitialConcentrationExpression>
+          </DiffusionData>
       </DiffusionField>
    </Steppable>
+
+    <Plugin Name="PixelTracker">
+   
+    <!-- Module tracking pixels of each cell --> 
+    </Plugin>
    
    <Steppable Type="UniformInitializer">
       
-      <!-- Initial layout of cells in the form of rectangular slab -->
       <Region>
-         <BoxMin x="115" y="120" z="0"/>
-         <BoxMax x="124" y="129" z="1"/>
+         <BoxMin x="120" y="120" z="0"/>
+         <BoxMax x="129" y="129" z="1"/>
          <Gap>0</Gap>
          <Width>10</Width>
          <Types>LUM</Types>
@@ -172,32 +128,32 @@
          <Types>EPI</Types>
       </Region>
       <Region>
-         <BoxMin x="125" y="120" z="0"/>
-         <BoxMax x="134" y="129" z="1"/>
+         <BoxMin x="130" y="120" z="0"/>
+         <BoxMax x="139" y="129" z="1"/>
          <Gap>0</Gap>
          <Width>10</Width>
          <Types>MYO</Types>
-      </Region>
-      <Region>
-         <BoxMin x="135" y="120" z="0"/>
-         <BoxMax x="144" y="129" z="1"/>
-         <Gap>0</Gap>
-         <Width>10</Width>
-         <Types>MEM</Types>
-      </Region>
-      <Region>
-         <BoxMin x="145" y="145" z="0"/>
-         <BoxMax x="153" y="153" z="1"/>
-         <Gap>0</Gap>
-         <Width>10</Width>
-         <Types>MAC_A</Types>
       </Region>
       <Region>
          <BoxMin x="130" y="130" z="0"/>
          <BoxMax x="139" y="139" z="1"/>
          <Gap>0</Gap>
          <Width>10</Width>
-         <Types>MAC_B</Types>
+         <Types>MEM</Types>
+      </Region>
+      <Region>
+         <BoxMin x="150" y="150" z="0"/>
+         <BoxMax x="159" y="159" z="1"/>
+         <Gap>0</Gap>
+         <Width>10</Width>
+         <Types>MAC</Types>
+      </Region>
+      <Region>
+         <BoxMin x="160" y="160" z="0"/>
+         <BoxMax x="169" y="169" z="1"/>
+         <Gap>0</Gap>
+         <Width>10</Width>
+         <Types>MAC</Types>
       </Region>
    </Steppable>
 </CompuCell3D>
