@@ -2,6 +2,7 @@ from cc3d.core.PySteppables import *
 import numpy as np
 import random
 
+
 # This class is used to set the target volume of each cell type
 class ConstraintInitializerSteppable(SteppableBasePy):
     def __init__(self,frequency=1):
@@ -173,6 +174,7 @@ class MitosisSteppable(MitosisSteppableBase):
         MitosisSteppableBase.__init__(self,frequency)
 
     def step(self, mcs):
+
         cells_to_divide=[]
         for cell in self.cell_list_by_type(self.EPI):
             neighbor_list = self.get_cell_neighbor_data_list(cell)
@@ -193,8 +195,6 @@ class MitosisSteppable(MitosisSteppableBase):
         for cell in self.cell_list_by_type(self.MEM):
             if cell.volume>30:
                 cells_to_divide.append(cell)
-        
-        
 
         for cell in cells_to_divide:
 
@@ -207,11 +207,7 @@ class MitosisSteppable(MitosisSteppableBase):
             
             
             # self.divide_cell_along_minor_axis(cell)
-        
 
-        
-            
-        
     def update_attributes(self):
         # reducing parent target volume
         self.parent_cell.targetVolume /= 2                 

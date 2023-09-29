@@ -98,41 +98,11 @@
 
       <DiffusionField Name="Chem">
          <DiffusionData>
-            <FieldName>CHEM</FieldName>
-            <GlobalDiffusionConstant>0.1</GlobalDiffusionConstant>
-            <GlobalDecayConstant>0</GlobalDecayConstant>
-            <!-- Additional options are: -->
-            <InitialConcentrationExpression>1</InitialConcentrationExpression>
-            <!-- <ConcentrationFileName>INITIAL CONCENTRATION FIELD - typically a file with path Simulation/NAME_OF_THE_FILE.txt</ConcentrationFileName> -->
-         </DiffusionData>
-         <SecretionData>
-            <!-- When secretion is defined inside DissufionSolverFE all secretion constants are scaled automaticaly to account for the extra calls to the diffusion step when handling large diffusion constants -->
-            
-            <!-- Uniform secretion Definition -->
-            <Secretion Type="LUM">0.1</Secretion>
-            <Secretion Type="EPI">0.1</Secretion>
-            <Secretion Type="MYO">0.1</Secretion>
-            <Secretion Type="MEM">0.1</Secretion>
-            <Secretion Type="MAC">0.1</Secretion>
-            <!-- <SecretionOnContact SecreteOnContactWith="LUM,EPI,MYO,MEM,MAC_A,MAC_B" Type="MAC_B">0.2</SecretionOnContact> -->
-            <!-- <ConstantConcentration Type="MAC_B">0.1</ConstantConcentration> -->
-         </SecretionData>
-         <BoundaryConditions>
-            <Plane Axis="X">
-               <ConstantValue PlanePosition="Min" Value="10.0"/>
-               <ConstantValue PlanePosition="Max" Value="5.0"/>
-               <!-- Other options are (examples): -->
-               <!-- <Periodic/> -->
-               <!-- <ConstantDerivative PlanePosition="Min" Value="10.0"/> -->
-            </Plane>
-            <Plane Axis="Y">
-               <ConstantDerivative PlanePosition="Min" Value="10.0"/>
-               <ConstantDerivative PlanePosition="Max" Value="5.0"/>
-               <!-- Other options are (examples): -->
-               <!-- <Periodic/> -->
-               <!-- <ConstantValue PlanePosition="Min" Value="10.0"/> -->
-            </Plane>
-         </BoundaryConditions>
+              <FieldName>Chem</FieldName>
+              <DiffusionConstant>0</DiffusionConstant>
+              <DecayConstant>0</DecayConstant>
+              <InitialConcentrationExpression>0</InitialConcentrationExpression>
+          </DiffusionData>
       </DiffusionField>
    </Steppable>
 
@@ -144,8 +114,8 @@
    <Steppable Type="UniformInitializer">
       
       <Region>
-         <BoxMin x="115" y="120" z="0"/>
-         <BoxMax x="124" y="129" z="1"/>
+         <BoxMin x="120" y="120" z="0"/>
+         <BoxMax x="129" y="129" z="1"/>
          <Gap>0</Gap>
          <Width>10</Width>
          <Types>LUM</Types>
@@ -158,25 +128,11 @@
          <Types>EPI</Types>
       </Region>
       <Region>
-         <BoxMin x="125" y="120" z="0"/>
-         <BoxMax x="134" y="129" z="1"/>
+         <BoxMin x="130" y="120" z="0"/>
+         <BoxMax x="139" y="129" z="1"/>
          <Gap>0</Gap>
          <Width>10</Width>
          <Types>MYO</Types>
-      </Region>
-      <Region>
-         <BoxMin x="135" y="120" z="0"/>
-         <BoxMax x="144" y="129" z="1"/>
-         <Gap>0</Gap>
-         <Width>10</Width>
-         <Types>MEM</Types>
-      </Region>
-      <Region>
-         <BoxMin x="145" y="145" z="0"/>
-         <BoxMax x="153" y="153" z="1"/>
-         <Gap>0</Gap>
-         <Width>10</Width>
-         <Types>MAC_A</Types>
       </Region>
       <Region>
          <BoxMin x="130" y="130" z="0"/>
