@@ -30,9 +30,4 @@ CompuCellSetup.register_steppable(steppable=MitosisSteppable(frequency=1))
 
 
 
-from BreastDuctSimSteppables import NeighborTrackerSteppable
-
-CompuCellSetup.register_steppable(steppable=NeighborTrackerSteppable(frequency=1))
-
-
 CompuCellSetup.run()
