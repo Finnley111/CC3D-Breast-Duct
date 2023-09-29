@@ -239,9 +239,9 @@ class PostionPlotSteppable(SteppableBasePy):
         # make some dots to force the plot to autoscale like we want (0,0),(100,100)
         # arguments are (name of the data series, x, y)
         self.plot_win.add_data_point("Track",0,    0)
-        self.plot_win.add_data_point("Track",0,  100)
-        self.plot_win.add_data_point("Track",100,  0)
-        self.plot_win.add_data_point("Track",100,100)
+        self.plot_win.add_data_point("Track",0,  200)
+        self.plot_win.add_data_point("Track",200,  0)
+        self.plot_win.add_data_point("Track",200,200)
 
 
     def step(self, mcs):
@@ -264,6 +264,6 @@ class PostionPlotSteppable(SteppableBasePy):
         if mcs % 100 == 0:
             self.plot_win.erase_all_data()
             self.plot_win.add_data_point("Track",0,    0)
-            self.plot_win.add_data_point("Track",0,  100)
-            self.plot_win.add_data_point("Track",100,  0)
-            self.plot_win.add_data_point("Track",100,100)
+            self.plot_win.add_data_point("Track",0,  200)
+            self.plot_win.add_data_point("Track",200,  0)
+            self.plot_win.add_data_point("Track",200,200)
