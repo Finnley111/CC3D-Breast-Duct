@@ -176,10 +176,10 @@ class CellMovementSteppable(SteppableBasePy):
 
         mac_X = 0.0
         mac_Y = 0.0
-        lamX_lower_bound = -0.5
-        lamX_upper_bound = 0.5 # 0.5 originally
-        lamY_lower_bound = -0.5
-        lamY_lower_bound = 0.5 # 0.5 originally
+        lamX_lower_bound = 0.0
+        lamX_upper_bound = 0.0 # 0.5 originally
+        lamY_lower_bound = 0.0
+        lamY_lower_bound = 0.0 # 0.5 originally
         num_of_mem_cells = 0
         pos_of_mems = []
 
