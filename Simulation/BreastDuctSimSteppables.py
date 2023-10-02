@@ -177,7 +177,7 @@ class CellMovementSteppable(SteppableBasePy):
         mac_X = 0.0
         mac_Y = 0.0
         lamX_lower_bound = 0.0
-        lamX_upper_bound = 0.0 # 0.5 originally
+        lamX_upper_bound = 10.0 # 0.5 originally
         lamY_lower_bound = 0.0
         lamY_lower_bound = 0.0 # 0.5 originally
         num_of_mem_cells = 0
@@ -267,3 +267,55 @@ class PostionPlotSteppable(SteppableBasePy):
             self.plot_win.add_data_point("Track",0,  200)
             self.plot_win.add_data_point("Track",200,  0)
             self.plot_win.add_data_point("Track",200,200)
+
+
+        
+class FocalPointPlasticityCompartmentsParamsSteppable(SteppableBasePy):
+    def __init__(self, frequency=1): #_simulator,
+        '''
+        constructor
+        '''
+        SteppableBasePy.__init__(self, frequency)
+        # PLACE YOUR CODE BELOW THIS LINE
+        # self.simulator = _simulator
+        # self.focalPointPlasticityPlugin = CompuCell.getFocalPointPlasticityPlugin()
+        # self.inventory = self.simulator.getPotts().getCellInventory()
+        # self.cellList = CellList(self.inventory)
+        
+
+    def start(self):
+        '''
+        called once before first MCS
+        '''
+        # PLACE YOUR CODE BELOW THIS LINE
+        
+
+    def step(self, mcs):
+        '''
+        called every MCS or every "frequency" MCS (depending how it was instantiated in the main Python file)
+        '''
+        # PLACE YOUR CODE BELOW THIS LINE
+                
+        # for cell in self.cell_list_by_type(self.MEM):
+            
+            # for fppd in FocalPointPlasticityDataList(self.focalPointPlasticityPlugin, cell):
+                # self.focalPointPlasticityPlugin.setFocalPointPlasticityParameters(cell, fppd.neighborAddress,
+                                                                                                # 0.0, 0.0, 0.0)
+            
+        
+
+    def finish(self):
+        '''
+        this function may be called at the end of simulation - used very infrequently though
+        '''        
+        # PLACE YOUR CODE BELOW THIS LINE
+        
+        return
+
+    def on_stop(self):
+        '''
+        this gets called each time user stops simulation
+        '''        
+        # PLACE YOUR CODE BELOW THIS LINE
+        
+        return

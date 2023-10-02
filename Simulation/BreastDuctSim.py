@@ -38,4 +38,9 @@ CompuCellSetup.register_steppable(steppable=CellMovementSteppable(frequency=1))
 from BreastDuctSimSteppables import PostionPlotSteppable
 CompuCellSetup.register_steppable(steppable=PostionPlotSteppable(frequency=1))
 
+
+        
+from BreastDuctSimSteppables import FocalPointPlasticityCompartmentsParamsSteppable
+CompuCellSetup.register_steppable(steppable=FocalPointPlasticityCompartmentsParamsSteppable(frequency=1))
+
 CompuCellSetup.run()
