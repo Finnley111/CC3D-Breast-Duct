@@ -111,7 +111,7 @@
     <!-- Module tracking pixels of each cell --> 
     </Plugin>
    
-   <Plugin Name="FocalPointPlasticity">
+<Plugin Name="FocalPointPlasticity">
    
    <!-- Specification of focal point junctions -->
    <!-- We separetely specify links between members of same cluster - InternalParameters and members of different clusters Parameters. When not using compartmental  cells comment out InternalParameters specification -->
@@ -121,15 +121,18 @@
    <!-- See CC3D manual for details on FPP plugin  -->
    
    <Parameters Type1="MEM" Type2="MEM">
-      <Lambda>10</Lambda>
+      <!-- <Lambda>10</Lambda> -->
       <ActivationEnergy>-50</ActivationEnergy>
       <TargetDistance>7</TargetDistance>
       <MaxDistance>20</MaxDistance>
-      <MaxNumberOfJunctions NeighborOrder="1">1</MaxNumberOfJunctions>
+      <MaxNumberOfJunctions NeighborOrder="1">2</MaxNumberOfJunctions>
    </Parameters>
    
-   <!-- <NeighborOrder>1</NeighborOrder> -->
+   <NeighborOrder>1</NeighborOrder>
 </Plugin>
+
+
+
 
    
    <Steppable Type="UniformInitializer">

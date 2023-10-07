@@ -97,6 +97,11 @@ class GrowthSteppable(SteppableBasePy):
                 # # you can access/manipulate cell properties here
                 # x = pixel_tracker_data.pixel.x
                 # y = pixel_tracker_data.pixel.y
+        
+        # for cell in self.cell_list_by_type(self.MEM):
+            # cell.targetVolume += 150./2000.
+            # if mcs> 100:
+                # cell.targetVolume -= 150./2000.
 
 
 
@@ -267,3 +272,28 @@ class PostionPlotSteppable(SteppableBasePy):
             self.plot_win.add_data_point("Track",0,  200)
             self.plot_win.add_data_point("Track",200,  0)
             self.plot_win.add_data_point("Track",200,200)
+      
+      
+class LinkSteppable(SteppableBasePy):
+    
+        
+        def __init__(self, frequency=1):
+            SteppableBasePy.__init__(self, frequency)
+        def start(self):
+            
+            print("link steppable is working")
+            
+        def step(self, mcs):
+            # LAMBDA = 2
+            # TARGET_DISTANCE = 0
+            # MAX_DISTANCE = 1000
+            if (mcs > 1000):
+                for cell in self.cell_list_by_type(self.MEM):
+                        # Make sure FocalPointPlacticity plugin is loaded
+                        # Arguments are:
+                        # initiator: CellG, initiated: CellG, lambda_distance: float, target_distance: float, max_distance: float
+                    link = self.new_fpp_link(cell, cell, 10)
+                        
+                        
+                        
+                    
