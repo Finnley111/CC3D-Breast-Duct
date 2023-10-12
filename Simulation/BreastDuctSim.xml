@@ -78,33 +78,60 @@
     <NeighborOrder>1</NeighborOrder>
   </Plugin>
   
-   <Plugin Name="Chemotaxis">
-      
-      <!-- You may repeat ChemicalField element for each chemical field declared in the PDE solvers --> 
-
-
-      <!-- Specification of chemotaxis properties of select cell types. --> 
-
-
-      <ChemicalField Name="Chem">
-         <ChemotaxisByType Lambda="20.0" Type="EPI"/>
-      </ChemicalField>
-   </Plugin>
    
-   <Steppable Type="DiffusionSolverFE">
-      
-      <!-- Specification of PDE solvers --> 
-
-
-      <DiffusionField Name="Chem">
-         <DiffusionData>
-              <FieldName>Chem</FieldName>
-              <DiffusionConstant>0</DiffusionConstant>
-              <DecayConstant>0</DecayConstant>
-              <InitialConcentrationExpression>0</InitialConcentrationExpression>
-          </DiffusionData>
-      </DiffusionField>
-   </Steppable>
+   
+<Steppable Type="DiffusionSolverFE">
+   
+   <!-- Specification of PDE solvers -->
+   <DiffusionField Name="CHEM">
+      <DiffusionData>
+         <FieldName>CHME</FieldName>
+         <GlobalDiffusionConstant>0.0</GlobalDiffusionConstant>
+         <GlobalDecayConstant>0.0</GlobalDecayConstant>
+         <!-- Additional options are: -->
+         <InitialConcentrationExpression>1.0</InitialConcentrationExpression>
+         <!-- <ConcentrationFileName>INITIAL CONCENTRATION FIELD - typically a file with path Simulation/NAME_OF_THE_FILE.txt</ConcentrationFileName> -->
+         <!-- <DiffusionCoefficient CellType="LUM">0.1</DiffusionCoefficient> -->
+         <DiffusionCoefficient CellType="EPI">0.00</DiffusionCoefficient>
+         <!-- <DiffusionCoefficient CellType="MYO">0.1</DiffusionCoefficient> -->
+         <!-- <DiffusionCoefficient CellType="MEM">0.1</DiffusionCoefficient> -->
+         <DiffusionCoefficient CellType="MAC">0.001</DiffusionCoefficient>
+         <!-- <DecayCoefficient CellType="LUM">0.0</DecayCoefficient> -->
+         <DecayCoefficient CellType="EPI">0.01</DecayCoefficient>
+         <!-- <DecayCoefficient CellType="MYO">0.0001</DecayCoefficient> -->
+         <!-- <DecayCoefficient CellType="MEM">0.0001</DecayCoefficient> -->
+         <DecayCoefficient CellType="MAC">0.01</DecayCoefficient>
+      </DiffusionData>
+      <SecretionData>
+         <!-- When secretion is defined inside DissufionSolverFE all secretion constants are scaled automaticaly to account for the extra calls to the diffusion step when handling large diffusion constants -->
+         
+         <!-- Uniform secretion Definition -->
+         <!-- <Secretion Type="LUM">0.1</Secretion> -->
+         <!-- <Secretion Type="EPI">0.1</Secretion> -->
+         <!-- <Secretion Type="MYO">0.1</Secretion> -->
+         <!-- <Secretion Type="MEM">0.1</Secretion> -->
+         <!-- <Secretion Type="MAC">0.1</Secretion> -->
+         <!-- <SecretionOnContact SecreteOnContactWith="LUM,EPI,MYO,MEM,MAC" Type="MAC">0.2</SecretionOnContact> -->
+         <!-- <ConstantConcentration Type="MAC">0.1</ConstantConcentration> -->
+      </SecretionData>
+      <BoundaryConditions>
+         <Plane Axis="X">
+            <!-- <ConstantValue PlanePosition="Min" Value="1.0"/> -->
+            <!-- <ConstantValue PlanePosition="Max" Value="0.0"/> -->
+            <!-- Other options are (examples): -->
+            <Periodic/>
+            <!-- <ConstantDerivative PlanePosition="Min" Value="10.0"/> -->
+         </Plane>
+         <Plane Axis="Y">
+            <!-- <ConstantDerivative PlanePosition="Min" Value="10.0"/> -->
+            <!-- <ConstantDerivative PlanePosition="Max" Value="5.0"/> -->
+            <!-- Other options are (examples): -->
+            <Periodic/>
+            <!-- <ConstantValue PlanePosition="Min" Value="10.0"/> -->
+         </Plane>
+      </BoundaryConditions>
+   </DiffusionField>
+</Steppable>
 
     <Plugin Name="PixelTracker">
    
