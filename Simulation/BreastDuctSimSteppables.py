@@ -97,6 +97,11 @@ class GrowthSteppable(SteppableBasePy):
                 # # you can access/manipulate cell properties here
                 # x = pixel_tracker_data.pixel.x
                 # y = pixel_tracker_data.pixel.y
+        
+        # for cell in self.cell_list_by_type(self.MEM):
+            # cell.targetVolume += 150./2000.
+            # if mcs> 100:
+                # cell.targetVolume -= 150./2000.
 
 
 
