@@ -49,6 +49,8 @@
       <!-- Module tracking center of mass of each cell -->
    </Plugin>
    
+   <!-- These values are responsible for the adhesive force between the cells when they contact -->
+   <!-- the lower the contact enrgies of two cells, the less likely they are to stick together -->
    <Plugin Name="Contact">
       <Energy Type1="Medium" Type2="Medium">10.0</Energy>
       <Energy Type1="Medium" Type2="LUM">800.0</Energy>
@@ -133,11 +135,13 @@
    </DiffusionField>
 </Steppable>
 
-    <Plugin Name="PixelTracker">
-   
-    <!-- Module tracking pixels of each cell --> 
-    </Plugin>
-   
+<Plugin Name="PixelTracker">
+
+<!-- Module tracking pixels of each cell --> 
+</Plugin>
+
+
+<!-- THIS PLUIGIN IS RESPONSIBLE FOR THE LINKS BETWEEN THE MEM CELLS -->
 <Plugin Name="FocalPointPlasticity">
    
    <!-- Specification of focal point junctions -->
@@ -159,9 +163,11 @@
 </Plugin>
 
 
+<!-- THIS IS RESPONSIBLE FOR THE INITIAL POSITIONS AND SIZE OF THE CELLS -->
+<!-- BoxMin: controls the bottom left coordinate of the cell -->
+<!-- BoxMax: controls the top coordinate of the cell -->
 
 
-   
    <Steppable Type="UniformInitializer">
       
       <Region>
