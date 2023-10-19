@@ -12,6 +12,8 @@ class ConstraintInitializerSteppable(SteppableBasePy):
 
         cellVol = 1000
         
+        #this controls what each cell types' target volume will be
+        #i.e how big it will grow before stoping
         for cell in self.cell_list:
             
             cell.lambdaVolume = 10
@@ -39,16 +41,20 @@ class BreastDuctSim(SteppableBasePy):
     def step(self,mcs):
         for cell in self.cell_list_by_type(self.MEM):
             
+            # mcs: the monty carlo step of the simulation (time)
             if mcs > 1500 and random.random() < 0.00001 and cell.volume > 10:
                self.delete_cell(cell)
                
-               
+        
+        # tracks the neighbor types of each EPI cell
+        # will be used later to determine if there is a clump forming
         for cell in self.cell_list_by_type(self.EPI):
             
             neighbor_list = self.get_cell_neighbor_data_list(cell)
             neighbor_count_by_type_dict = neighbor_list.neighbor_count_by_type()
             
             #print('Neighbor count for cell.id={} is {}'.format(cell.id, neighbor_count_by_type_dict))
+            # cell is more likely to be killed if not neighboring the lumen
             if 1 not in neighbor_count_by_type_dict:
                 if random.random() < 0.01 and cell.volume > 15:
                     self.delete_cell(cell)
@@ -83,25 +89,12 @@ class GrowthSteppable(SteppableBasePy):
 
     def step(self, mcs):
     
+        # controls the rate of growth of the EPI cells
+        # the other cells do not have a growth rate, they divide because of their initial volume
+        # and are capped by their target volume
         for cell in self.cell_list_by_type(self.EPI):
             cell.targetVolume += 0.05
             #cell.targetSurface = 2.0*np.pi*np.sqrt(cell.targetVolume)
-            
-        # iterating over cells of type 1
-        # list of  cell types (capitalized)
-        
-        
-        # for cell in self.cell_list_by_type(self.MEM):
-            # pixel_list = self.get_cell_pixel_list(cell)
-            # for pixel_tracker_data in pixel_list:
-                # # you can access/manipulate cell properties here
-                # x = pixel_tracker_data.pixel.x
-                # y = pixel_tracker_data.pixel.y
-        
-        # for cell in self.cell_list_by_type(self.MEM):
-            # cell.targetVolume += 150./2000.
-            # if mcs> 100:
-                # cell.targetVolume -= 150./2000.
 
 
 
@@ -112,20 +105,23 @@ class MitosisSteppable(MitosisSteppableBase):
     def step(self, mcs):
 
         cells_to_divide=[]
+        # DIVISION OF EPI CELLS
         for cell in self.cell_list_by_type(self.EPI):
             neighbor_list = self.get_cell_neighbor_data_list(cell)
             neighbor_count_by_type_dict = neighbor_list.neighbor_count_by_type()
             
+            # BEFORE 750 time steps the cells divide less frequently (helps control initial setup)
             if mcs < 750 and cell.volume>100 and random.random() < 0.01:
                 cells_to_divide.append(cell)
             elif cell.volume>100 and random.random() < 0.1:
                 cells_to_divide.append(cell)
+            # if the neighbor is not the lumen, the chance for division is greater to make the simulation show more results
             elif 1 not in neighbor_count_by_type_dict:
                 if cell.volume>25 and random.random() < 0.8:
                     cells_to_divide.append(cell)
                 
         for cell in self.cell_list_by_type(self.MYO):
-            if cell.volume>70:
+            if cell.volume>70: # the cell will divide if the cell has a volume greater than 70
                 cells_to_divide.append(cell)
         
         for cell in self.cell_list_by_type(self.MEM):
@@ -134,15 +130,17 @@ class MitosisSteppable(MitosisSteppableBase):
 
         for cell in cells_to_divide:
 
+            # OTHER POSSIBLE WAYS TO DIVIDE CELLS
             # self.divide_cell_random_orientation(cell)
             # Other valid options
             # self.divide_cell_orientation_vector_based(cell,1,1,0)
+            # self.divide_cell_along_minor_axis(cell)
             
            
             self.divide_cell_along_major_axis(cell)
             
             
-            # self.divide_cell_along_minor_axis(cell)
+            
 
     def update_attributes(self):
         # reducing parent target volume
@@ -179,8 +177,11 @@ class CellMovementSteppable(SteppableBasePy):
         # negative lambdaVecX makes force point in the positive direction
         # THIS CONTROLS THE MOVEMENT OF THE MACROPHAGE
 
+        # declaring variables that will be used to find the position of each macrophage
         mac_X = 0.0
         mac_Y = 0.0
+        
+        # lower_bound and upper_bound is used in determining the direction of the MAC by using a random number generator
         lamX_lower_bound = 0.0
         lamX_upper_bound = 0.0 # 0.5 originally
         lamY_lower_bound = 0.0
@@ -205,7 +206,7 @@ class CellMovementSteppable(SteppableBasePy):
         num_of_mem_cells = len(pos_of_mems)
             
         
-        
+        # this loop is responsible for taking the values and actually moving the macrophages
         for cell in self.cell_list_by_type(self.MAC):
             # force component pointing along X axis
             cell.lambdaVecX = 10.1 * random.uniform(lamX_lower_bound, lamX_upper_bound)
@@ -228,6 +229,7 @@ class CellMovementSteppable(SteppableBasePy):
         return
 
 
+####### THIS CLASS IS USED FOR THE GRAPH THAT SHOWS POSITION OF MEM ##########
 class PostionPlotSteppable(SteppableBasePy):
     
     def __init__(self, frequency=10):
@@ -272,28 +274,56 @@ class PostionPlotSteppable(SteppableBasePy):
             self.plot_win.add_data_point("Track",0,  200)
             self.plot_win.add_data_point("Track",200,  0)
             self.plot_win.add_data_point("Track",200,200)
-      
-      
-class LinkSteppable(SteppableBasePy):
-    
+
+
+######### THIS CLASS WILL BE USED TO MANAGE THE LINKS IN THE PYTHON STEPPABLE ##########
         
-        def __init__(self, frequency=1):
-            SteppableBasePy.__init__(self, frequency)
-        def start(self):
+class FocalPointPlasticityCompartmentsParamsSteppable(SteppableBasePy):
+    def __init__(self, frequency=1): #_simulator,
+        '''
+        constructor
+        '''
+        SteppableBasePy.__init__(self, frequency)
+        # PLACE YOUR CODE BELOW THIS LINE
+        # self.simulator = _simulator
+        # self.focalPointPlasticityPlugin = CompuCell.getFocalPointPlasticityPlugin()
+        # self.inventory = self.simulator.getPotts().getCellInventory()
+        # self.cellList = CellList(self.inventory)
+        
+
+    def start(self):
+        '''
+        called once before first MCS
+        '''
+        # PLACE YOUR CODE BELOW THIS LINE
+        
+
+    def step(self, mcs):
+        '''
+        called every MCS or every "frequency" MCS (depending how it was instantiated in the main Python file)
+        '''
+        # PLACE YOUR CODE BELOW THIS LINE
+                
+        # for cell in self.cell_list_by_type(self.MEM):
             
-            print("link steppable is working")
+            # for fppd in FocalPointPlasticityDataList(self.focalPointPlasticityPlugin, cell):
+                # self.focalPointPlasticityPlugin.setFocalPointPlasticityParameters(cell, fppd.neighborAddress,
+                                                                                                # 0.0, 0.0, 0.0)
             
-        def step(self, mcs):
-            # LAMBDA = 2
-            # TARGET_DISTANCE = 0
-            # MAX_DISTANCE = 1000
-            if (mcs > 1000):
-                for cell in self.cell_list_by_type(self.MEM):
-                        # Make sure FocalPointPlacticity plugin is loaded
-                        # Arguments are:
-                        # initiator: CellG, initiated: CellG, lambda_distance: float, target_distance: float, max_distance: float
-                    link = self.new_fpp_link(cell, cell, 10)
-                        
-                        
-                        
-                    
+        
+
+    def finish(self):
+        '''
+        this function may be called at the end of simulation - used very infrequently though
+        '''        
+        # PLACE YOUR CODE BELOW THIS LINE
+        
+        return
+
+    def on_stop(self):
+        '''
+        this gets called each time user stops simulation
+        '''        
+        # PLACE YOUR CODE BELOW THIS LINE
+        
+        return
