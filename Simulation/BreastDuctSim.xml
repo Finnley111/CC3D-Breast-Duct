@@ -49,8 +49,6 @@
       <!-- Module tracking center of mass of each cell -->
    </Plugin>
    
-   <!-- These values are responsible for the adhesive force between the cells when they contact -->
-   <!-- the lower the contact enrgies of two cells, the less likely they are to stick together -->
    <Plugin Name="Contact">
       <Energy Type1="Medium" Type2="Medium">10.0</Energy>
       <Energy Type1="Medium" Type2="LUM">800.0</Energy>
@@ -88,25 +86,21 @@
    <DiffusionField Name="CHEM">
       <DiffusionData>
          <FieldName>CHME</FieldName>
+         <!-- ### THE GLOBAL CONSTANT controls the whole chemical version on the background  -->
+         <!-- ### The diffusion mainly controls the approximation of the diffusion equation -->
+         <!-- ### The decay mainly controls the rescaling of the simple diffusion -->
          <GlobalDiffusionConstant>0.0</GlobalDiffusionConstant>
          <GlobalDecayConstant>0.0</GlobalDecayConstant>
          <!-- Additional options are: -->
          <InitialConcentrationExpression>1.0</InitialConcentrationExpression>
          <!-- <ConcentrationFileName>INITIAL CONCENTRATION FIELD - typically a file with path Simulation/NAME_OF_THE_FILE.txt</ConcentrationFileName> -->
-         <!-- <DiffusionCoefficient CellType="LUM">0.1</DiffusionCoefficient> -->
          <DiffusionCoefficient CellType="EPI">0.00</DiffusionCoefficient>
-         <!-- <DiffusionCoefficient CellType="MYO">0.1</DiffusionCoefficient> -->
-         <!-- <DiffusionCoefficient CellType="MEM">0.1</DiffusionCoefficient> -->
          <DiffusionCoefficient CellType="MAC">0.001</DiffusionCoefficient>
-         <!-- <DecayCoefficient CellType="LUM">0.0</DecayCoefficient> -->
          <DecayCoefficient CellType="EPI">0.01</DecayCoefficient>
-         <!-- <DecayCoefficient CellType="MYO">0.0001</DecayCoefficient> -->
-         <!-- <DecayCoefficient CellType="MEM">0.0001</DecayCoefficient> -->
          <DecayCoefficient CellType="MAC">0.01</DecayCoefficient>
       </DiffusionData>
       <SecretionData>
          <!-- When secretion is defined inside DissufionSolverFE all secretion constants are scaled automaticaly to account for the extra calls to the diffusion step when handling large diffusion constants -->
-         
          <!-- Uniform secretion Definition -->
          <!-- <Secretion Type="LUM">0.1</Secretion> -->
          <!-- <Secretion Type="EPI">0.1</Secretion> -->
@@ -118,16 +112,16 @@
       </SecretionData>
       <BoundaryConditions>
          <Plane Axis="X">
+         <!-- ### OPTIONS TO get secretion work on the lane -->
+         <!-- ### Periodic means that is a continuous boundary with the simulation -->
             <!-- <ConstantValue PlanePosition="Min" Value="1.0"/> -->
             <!-- <ConstantValue PlanePosition="Max" Value="0.0"/> -->
-            <!-- Other options are (examples): -->
-            <Periodic/>
+            <Periodic/> 
             <!-- <ConstantDerivative PlanePosition="Min" Value="10.0"/> -->
          </Plane>
          <Plane Axis="Y">
             <!-- <ConstantDerivative PlanePosition="Min" Value="10.0"/> -->
             <!-- <ConstantDerivative PlanePosition="Max" Value="5.0"/> -->
-            <!-- Other options are (examples): -->
             <Periodic/>
             <!-- <ConstantValue PlanePosition="Min" Value="10.0"/> -->
          </Plane>
@@ -135,13 +129,10 @@
    </DiffusionField>
 </Steppable>
 
-<Plugin Name="PixelTracker">
-
-<!-- Module tracking pixels of each cell --> 
-</Plugin>
-
-
-<!-- THIS PLUIGIN IS RESPONSIBLE FOR THE LINKS BETWEEN THE MEM CELLS -->
+    <Plugin Name="PixelTracker">
+    <!-- Module tracking pixels of each cell --> 
+    </Plugin>
+   
 <Plugin Name="FocalPointPlasticity">
    
    <!-- Specification of focal point junctions -->
@@ -162,12 +153,7 @@
    <NeighborOrder>1</NeighborOrder>
 </Plugin>
 
-
-<!-- THIS IS RESPONSIBLE FOR THE INITIAL POSITIONS AND SIZE OF THE CELLS -->
-<!-- BoxMin: controls the bottom left coordinate of the cell -->
-<!-- BoxMax: controls the top coordinate of the cell -->
-
-
+   
    <Steppable Type="UniformInitializer">
       
       <Region>
