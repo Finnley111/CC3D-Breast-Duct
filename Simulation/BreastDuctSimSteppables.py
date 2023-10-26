@@ -241,12 +241,12 @@ class CellMovementSteppable(SteppableBasePy):
             # i.e. this controls the first macrophage (order is clockwise)
             if current_MAC % 8 == 0:
                 # force component pointing along X axis
-                cell.lambdaVecX = 10.1 * mac_vectors[0][0]
-                #cell.lambdaVecX = 10.1 * random.uniform(0, 0)
+                # cell.lambdaVecX = 10.1 * mac_vectors[0][0]
+                cell.lambdaVecX = 10.1 * random.uniform(10, 10)
 
                 # force component pointing along Y axis
-                cell.lambdaVecX = 10.1 * mac_vectors[0][1]
-                # cell.lambdaVecY = 10.1 * random.uniform(0, 0)
+                #cell.lambdaVecX = 10.1 * mac_vectors[0][1]
+                cell.lambdaVecY = 10.1 * random.uniform(10, 10)
             elif current_MAC % 8 == 1:
                 # force component pointing along X axis
                 cell.lambdaVecX = 10.1 * random.uniform(0, 0)
