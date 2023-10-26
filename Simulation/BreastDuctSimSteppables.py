@@ -188,31 +188,133 @@ class CellMovementSteppable(SteppableBasePy):
         lamY_lower_bound = 0.0 # 0.5 originally
         num_of_mem_cells = 0
         pos_of_mems = []
+        # this list has the position of the closest EPI cell to the corresponding MAC cell
+        # this will be used to get the movement vectors for each MAC cell for best path
+        pos_of_closest_epis = []
+        # list of lists containing x and y vectors for the movements of each MAC cell
+        mac_vectors = []
 
+
+
+        # GOOD PROTOTYPE ON GETTING CLOSEST EPITHELIAL CELL POSITIONS
+        # WILL HAVE TO DOUBLE CHECK LATER TO MAKE SURE IT IS WORKING AS INTENDED
+        
+        current_MAC = 0
+        
         # get position of macrophage
         for cell in self.cell_list_by_type(self.MAC):
             mac_X = cell.xCOM
             mac_Y = cell.yCOM
-            print(mac_X, ' ', mac_Y)
+            # the initial value is set ridiculously high so it always passes the first if statement
+            closest_epi = [10000000, 10000000] # the closest epithelial cell to the current MAC, it will be appended to pos_of_closest_epis
+            #print(mac_X, ' ', mac_Y)
             
-        # LOOK UP: HOW TO GET THE VECTOR FROM TWO POINTS TO CONTROL THE DIRECTION OF THE MACROPHAGE
+            # get position of macrophages and then position of epithelial cells
+            # then use distance formula on coords to find closest one
             
-        
-        # get position and number of membrane cells
-        for cell in self.cell_list_by_type(self.MEM):
-
-            pos_of_mems.append((cell.xCOM, cell.yCOM))
-        
-        num_of_mem_cells = len(pos_of_mems)
+            for epi_cell in self.cell_list_by_type(self.EPI):
+                epi_X = epi_cell.xCOM
+                epi_Y = epi_cell.yCOM
+                
+                if np.sqrt((epi_X - mac_X)**2+(epi_Y - mac_Y)**2) < np.sqrt((closest_epi[0] - mac_X)**2+(closest_epi[1] - mac_Y)**2):
+                    
+                    closest_epi[0] = epi_X
+                    closest_epi[1] = epi_Y
+                    
             
-        
+            pos_of_closest_epis.append(closest_epi)
+            print(mac_X, mac_Y)
+            print(pos_of_closest_epis[0][0], ' ', pos_of_closest_epis[0][1])
+              
+            # use -1 for the first index since the current MAC will always be the latest one added to pos_of _closest_epi  
+            mac_vec_X = pos_of_closest_epis[current_MAC][0] - mac_X
+            mac_vec_Y = pos_of_closest_epis[current_MAC][0] - mac_Y
+            mac_vec = (mac_vec_X, mac_vec_Y)
+            
+            mac_vectors.append(mac_vec)
+            
+            
         # this loop is responsible for taking the values and actually moving the macrophages
-        for cell in self.cell_list_by_type(self.MAC):
-            # force component pointing along X axis
-            cell.lambdaVecX = 10.1 * random.uniform(lamX_lower_bound, lamX_upper_bound)
+        
+            
+            # use the modulos to control the individual cells in the list
+            # i.e. this controls the first macrophage (order is clockwise)
+            if current_MAC % 8 == 0:
+                # force component pointing along X axis
+                cell.lambdaVecX = 10.1 * mac_vectors[0][0]
+                #cell.lambdaVecX = 10.1 * random.uniform(0, 0)
 
-            # force component pointing along Y axis
-            cell.lambdaVecY = 10.1 * random.uniform(lamY_lower_bound, lamX_upper_bound)
+                # force component pointing along Y axis
+                cell.lambdaVecX = 10.1 * mac_vectors[0][1]
+                # cell.lambdaVecY = 10.1 * random.uniform(0, 0)
+            elif current_MAC % 8 == 1:
+                # force component pointing along X axis
+                cell.lambdaVecX = 10.1 * random.uniform(0, 0)
+
+                # force component pointing along Y axis
+                cell.lambdaVecY = 10.1 * random.uniform(0, 0)
+            elif current_MAC % 8 == 2:
+                # force component pointing along X axis
+                cell.lambdaVecX = 10.1 * random.uniform(0, 0)
+
+                # force component pointing along Y axis
+                cell.lambdaVecY = 10.1 * random.uniform(0, 0)
+            else:
+                # force component pointing along X axis
+                cell.lambdaVecX = 10.1 * random.uniform(lamX_lower_bound, lamX_upper_bound)
+
+                # force component pointing along Y axis
+                cell.lambdaVecY = 10.1 * random.uniform(lamY_lower_bound, lamX_upper_bound)
+            
+            
+            
+            current_MAC = current_MAC + 1
+            
+        
+        
+     
+     
+     
+     
+            
+        # count = 0
+        # # this loop is responsible for taking the values and actually moving the macrophages
+        # for cell in self.cell_list_by_type(self.MAC):
+            
+            # # use the modulos to control the individual cells in the list
+            # # i.e. this controls the first macrophage (order is clockwise)
+            # if count % 8 == 0:
+                # # force component pointing along X axis
+                # cell.lambdaVecX = 10.1 * mac_vectors[0][0]
+                # #cell.lambdaVecX = 10.1 * random.uniform(0, 0)
+
+                # # force component pointing along Y axis
+                # cell.lambdaVecX = 10.1 * mac_vectors[0][1]
+                # # cell.lambdaVecY = 10.1 * random.uniform(0, 0)
+            # elif count % 8 == 1:
+                # # force component pointing along X axis
+                # cell.lambdaVecX = 10.1 * random.uniform(0, 0)
+
+                # # force component pointing along Y axis
+                # cell.lambdaVecY = 10.1 * random.uniform(0, 0)
+            # elif count % 8 == 2:
+                # # force component pointing along X axis
+                # cell.lambdaVecX = 10.1 * random.uniform(0, 0)
+
+                # # force component pointing along Y axis
+                # cell.lambdaVecY = 10.1 * random.uniform(0, 0)
+            # else:
+                # # force component pointing along X axis
+                # cell.lambdaVecX = 10.1 * random.uniform(lamX_lower_bound, lamX_upper_bound)
+
+                # # force component pointing along Y axis
+                # cell.lambdaVecY = 10.1 * random.uniform(lamY_lower_bound, lamX_upper_bound)
+            
+            # count = count + 1
+            
+            
+            
+            
 
     def finish(self):
         '''
