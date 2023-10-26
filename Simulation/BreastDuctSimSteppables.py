@@ -194,6 +194,13 @@ class CellMovementSteppable(SteppableBasePy):
         # list of lists containing x and y vectors for the movements of each MAC cell
         mac_vectors = []
 
+
+
+        # GOOD PROTOTYPE ON GETTING CLOSEST EPITHELIAL CELL POSITIONS
+        # WILL HAVE TO DOUBLE CHECK LATER TO MAKE SURE IT IS WORKING AS INTENDED
+        
+        current_MAC = 0
+        
         # get position of macrophage
         for cell in self.cell_list_by_type(self.MAC):
             mac_X = cell.xCOM
@@ -214,45 +221,39 @@ class CellMovementSteppable(SteppableBasePy):
                     closest_epi[0] = epi_X
                     closest_epi[1] = epi_Y
                     
-            if (mcs % 10 == 0):
-                pos_of_closest_epis.append(closest_epi)
-                print(closest_epi[0], ' ', closest_epi[1])
-                
-                
-                
-                
             
-        # GOOD PROTOTYPE ON GETTING CLOSEST EPITHELIAL CELL POSITIONS
-        # WILL HAVE TO DOUBLE CHECK LATER TO MAKE SURE IT IS WORKING AS INTENDED
-        
-        
-        
-        # get position and number of membrane cells
-        for cell in self.cell_list_by_type(self.MEM):
-
-            pos_of_mems.append((cell.xCOM, cell.yCOM))
-        
-        num_of_mem_cells = len(pos_of_mems)
+            pos_of_closest_epis.append(closest_epi)
+            print(mac_X, mac_Y)
+            print(pos_of_closest_epis[0][0], ' ', pos_of_closest_epis[0][1])
+              
+            # use -1 for the first index since the current MAC will always be the latest one added to pos_of _closest_epi  
+            mac_vec_X = pos_of_closest_epis[current_MAC][0] - mac_X
+            mac_vec_Y = pos_of_closest_epis[current_MAC][0] - mac_Y
+            mac_vec = (mac_vec_X, mac_vec_Y)
             
-        count = 0
+            mac_vectors.append(mac_vec)
+            
+            
         # this loop is responsible for taking the values and actually moving the macrophages
-        for cell in self.cell_list_by_type(self.MAC):
+        
             
             # use the modulos to control the individual cells in the list
             # i.e. this controls the first macrophage (order is clockwise)
-            if count % 8 == 0:
+            if current_MAC % 8 == 0:
+                # force component pointing along X axis
+                cell.lambdaVecX = 10.1 * mac_vectors[0][0]
+                #cell.lambdaVecX = 10.1 * random.uniform(0, 0)
+
+                # force component pointing along Y axis
+                cell.lambdaVecX = 10.1 * mac_vectors[0][1]
+                # cell.lambdaVecY = 10.1 * random.uniform(0, 0)
+            elif current_MAC % 8 == 1:
                 # force component pointing along X axis
                 cell.lambdaVecX = 10.1 * random.uniform(0, 0)
 
                 # force component pointing along Y axis
                 cell.lambdaVecY = 10.1 * random.uniform(0, 0)
-            elif count % 8 == 1:
-                # force component pointing along X axis
-                cell.lambdaVecX = 10.1 * random.uniform(0, 0)
-
-                # force component pointing along Y axis
-                cell.lambdaVecY = 10.1 * random.uniform(0, 0)
-            elif count % 8 == 2:
+            elif current_MAC % 8 == 2:
                 # force component pointing along X axis
                 cell.lambdaVecX = 10.1 * random.uniform(0, 0)
 
@@ -265,7 +266,51 @@ class CellMovementSteppable(SteppableBasePy):
                 # force component pointing along Y axis
                 cell.lambdaVecY = 10.1 * random.uniform(lamY_lower_bound, lamX_upper_bound)
             
-            count = count + 1
+            
+            
+            current_MAC = current_MAC + 1
+            
+        
+        
+     
+     
+     
+     
+            
+        # count = 0
+        # # this loop is responsible for taking the values and actually moving the macrophages
+        # for cell in self.cell_list_by_type(self.MAC):
+            
+            # # use the modulos to control the individual cells in the list
+            # # i.e. this controls the first macrophage (order is clockwise)
+            # if count % 8 == 0:
+                # # force component pointing along X axis
+                # cell.lambdaVecX = 10.1 * mac_vectors[0][0]
+                # #cell.lambdaVecX = 10.1 * random.uniform(0, 0)
+
+                # # force component pointing along Y axis
+                # cell.lambdaVecX = 10.1 * mac_vectors[0][1]
+                # # cell.lambdaVecY = 10.1 * random.uniform(0, 0)
+            # elif count % 8 == 1:
+                # # force component pointing along X axis
+                # cell.lambdaVecX = 10.1 * random.uniform(0, 0)
+
+                # # force component pointing along Y axis
+                # cell.lambdaVecY = 10.1 * random.uniform(0, 0)
+            # elif count % 8 == 2:
+                # # force component pointing along X axis
+                # cell.lambdaVecX = 10.1 * random.uniform(0, 0)
+
+                # # force component pointing along Y axis
+                # cell.lambdaVecY = 10.1 * random.uniform(0, 0)
+            # else:
+                # # force component pointing along X axis
+                # cell.lambdaVecX = 10.1 * random.uniform(lamX_lower_bound, lamX_upper_bound)
+
+                # # force component pointing along Y axis
+                # cell.lambdaVecY = 10.1 * random.uniform(lamY_lower_bound, lamX_upper_bound)
+            
+            # count = count + 1
             
             
             
