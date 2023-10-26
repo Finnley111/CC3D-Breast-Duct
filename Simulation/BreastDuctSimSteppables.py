@@ -188,14 +188,43 @@ class CellMovementSteppable(SteppableBasePy):
         lamY_lower_bound = 0.0 # 0.5 originally
         num_of_mem_cells = 0
         pos_of_mems = []
+        # this list has the position of the closest EPI cell to the corresponding MAC cell
+        # this will be used to get the movement vectors for each MAC cell for best path
+        pos_of_closest_epis = []
+        # list of lists containing x and y vectors for the movements of each MAC cell
+        mac_vectors = []
 
         # get position of macrophage
         for cell in self.cell_list_by_type(self.MAC):
             mac_X = cell.xCOM
             mac_Y = cell.yCOM
-            print(mac_X, ' ', mac_Y)
+            # the initial value is set ridiculously high so it always passes the first if statement
+            closest_epi = [10000000, 10000000] # the closest epithelial cell to the current MAC, it will be appended to pos_of_closest_epis
+            #print(mac_X, ' ', mac_Y)
             
-        # LOOK UP: HOW TO GET THE VECTOR FROM TWO POINTS TO CONTROL THE DIRECTION OF THE MACROPHAGE
+            # get position of macrophages and then position of epithelial cells
+            # then use distance formula on coords to find closest one
+            
+            for epi_cell in self.cell_list_by_type(self.EPI):
+                epi_X = epi_cell.xCOM
+                epi_Y = epi_cell.yCOM
+                
+                if np.sqrt((epi_X - mac_X)**2+(epi_Y - mac_Y)**2) < np.sqrt((closest_epi[0] - mac_X)**2+(closest_epi[1] - mac_Y)**2):
+                    
+                    closest_epi[0] = epi_X
+                    closest_epi[1] = epi_Y
+                    
+            if (mcs % 10 == 0):
+                pos_of_closest_epis.append(closest_epi)
+                print(closest_epi[0], ' ', closest_epi[1])
+                
+                
+                
+                
+            
+        # GOOD PROTOTYPE ON GETTING CLOSEST EPITHELIAL CELL POSITIONS
+        # WILL HAVE TO DOUBLE CHECK LATER TO MAKE SURE IT IS WORKING AS INTENDED
+        
         
         
         # get position and number of membrane cells
@@ -213,22 +242,22 @@ class CellMovementSteppable(SteppableBasePy):
             # i.e. this controls the first macrophage (order is clockwise)
             if count % 8 == 0:
                 # force component pointing along X axis
-                cell.lambdaVecX = 10.1 * random.uniform(10, 10)
+                cell.lambdaVecX = 10.1 * random.uniform(0, 0)
 
                 # force component pointing along Y axis
-                cell.lambdaVecY = 10.1 * random.uniform(10, 10)
+                cell.lambdaVecY = 10.1 * random.uniform(0, 0)
             elif count % 8 == 1:
                 # force component pointing along X axis
-                cell.lambdaVecX = 10.1 * random.uniform(10, 10)
+                cell.lambdaVecX = 10.1 * random.uniform(0, 0)
 
                 # force component pointing along Y axis
-                cell.lambdaVecY = 10.1 * random.uniform(10, 10)
+                cell.lambdaVecY = 10.1 * random.uniform(0, 0)
             elif count % 8 == 2:
                 # force component pointing along X axis
-                cell.lambdaVecX = 10.1 * random.uniform(10, 10)
+                cell.lambdaVecX = 10.1 * random.uniform(0, 0)
 
                 # force component pointing along Y axis
-                cell.lambdaVecY = 10.1 * random.uniform(10, 10)
+                cell.lambdaVecY = 10.1 * random.uniform(0, 0)
             else:
                 # force component pointing along X axis
                 cell.lambdaVecX = 10.1 * random.uniform(lamX_lower_bound, lamX_upper_bound)
