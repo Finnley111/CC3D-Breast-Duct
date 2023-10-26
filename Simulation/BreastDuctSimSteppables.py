@@ -196,7 +196,7 @@ class CellMovementSteppable(SteppableBasePy):
             print(mac_X, ' ', mac_Y)
             
         # LOOK UP: HOW TO GET THE VECTOR FROM TWO POINTS TO CONTROL THE DIRECTION OF THE MACROPHAGE
-            
+        
         
         # get position and number of membrane cells
         for cell in self.cell_list_by_type(self.MEM):
@@ -205,14 +205,42 @@ class CellMovementSteppable(SteppableBasePy):
         
         num_of_mem_cells = len(pos_of_mems)
             
-        
+        count = 0
         # this loop is responsible for taking the values and actually moving the macrophages
         for cell in self.cell_list_by_type(self.MAC):
-            # force component pointing along X axis
-            cell.lambdaVecX = 10.1 * random.uniform(lamX_lower_bound, lamX_upper_bound)
+            
+            # use the modulos to control the individual cells in the list
+            # i.e. this controls the first macrophage (order is clockwise)
+            if count % 8 == 0:
+                # force component pointing along X axis
+                cell.lambdaVecX = 10.1 * random.uniform(10, 10)
 
-            # force component pointing along Y axis
-            cell.lambdaVecY = 10.1 * random.uniform(lamY_lower_bound, lamX_upper_bound)
+                # force component pointing along Y axis
+                cell.lambdaVecY = 10.1 * random.uniform(10, 10)
+            elif count % 8 == 1:
+                # force component pointing along X axis
+                cell.lambdaVecX = 10.1 * random.uniform(10, 10)
+
+                # force component pointing along Y axis
+                cell.lambdaVecY = 10.1 * random.uniform(10, 10)
+            elif count % 8 == 2:
+                # force component pointing along X axis
+                cell.lambdaVecX = 10.1 * random.uniform(10, 10)
+
+                # force component pointing along Y axis
+                cell.lambdaVecY = 10.1 * random.uniform(10, 10)
+            else:
+                # force component pointing along X axis
+                cell.lambdaVecX = 10.1 * random.uniform(lamX_lower_bound, lamX_upper_bound)
+
+                # force component pointing along Y axis
+                cell.lambdaVecY = 10.1 * random.uniform(lamY_lower_bound, lamX_upper_bound)
+            
+            count = count + 1
+            
+            
+            
+            
 
     def finish(self):
         '''
