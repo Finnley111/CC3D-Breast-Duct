@@ -166,7 +166,18 @@ class CellMovementSteppable(SteppableBasePy):
         
 
     def start(self):
-        
+        # make a plot of the cells positions
+        self.plot_win = self.add_new_plot_window(title='MEM COM Track',
+                                                 x_axis_title='X', x_scale_type='linear',
+                                                 y_axis_title='Y', y_scale_type='linear',
+                                                 grid=False)
+        self.plot_win.add_plot("Track", style='dot', color='white', size=1)
+        # make some dots to force the plot to autoscale like we want (0,0),(100,100)
+        # arguments are (name of the data series, x, y)
+        self.plot_win.add_data_point("Track",0,    0)
+        self.plot_win.add_data_point("Track",0,  200)
+        self.plot_win.add_data_point("Track",200,  0)
+        self.plot_win.add_data_point("Track",200,200)
         print("CellMovementSteppable: This function is called once before simulation")
 
     def step(self, mcs):
@@ -188,11 +199,6 @@ class CellMovementSteppable(SteppableBasePy):
         lamY_lower_bound = 0.0 # 0.5 originally
         num_of_mem_cells = 0
         pos_of_mems = []
-        # this list has the position of the closest EPI cell to the corresponding MAC cell
-        # this will be used to get the movement vectors for each MAC cell for best path
-        pos_of_closest_epis = []
-        # list of lists containing x and y vectors for the movements of each MAC cell
-        mac_vectors = []
 
 
 
@@ -222,50 +228,87 @@ class CellMovementSteppable(SteppableBasePy):
                     closest_epi[1] = epi_Y
                     
             
-            pos_of_closest_epis.append(closest_epi)
-            print(mac_X, mac_Y)
-            print(pos_of_closest_epis[0][0], ' ', pos_of_closest_epis[0][1])
+            #print("MAC POS: ", mac_X, mac_Y)
+            #print("EPI POS: ", closest_epi[0], closest_epi[1])
               
             # use -1 for the first index since the current MAC will always be the latest one added to pos_of _closest_epi  
-            mac_vec_X = pos_of_closest_epis[current_MAC][0] - mac_X
-            mac_vec_Y = pos_of_closest_epis[current_MAC][0] - mac_Y
+            mac_vec_X = -1*(closest_epi[0] - mac_X)
+            mac_vec_Y = -1*(closest_epi[0] - mac_Y)
             mac_vec = (mac_vec_X, mac_vec_Y)
-            
-            mac_vectors.append(mac_vec)
-            
+                        
             
         # this loop is responsible for taking the values and actually moving the macrophages
         
-            
-            # use the modulos to control the individual cells in the list
-            # i.e. this controls the first macrophage (order is clockwise)
-            if current_MAC % 8 == 0:
-                # force component pointing along X axis
-                # cell.lambdaVecX = 10.1 * mac_vectors[0][0]
-                cell.lambdaVecX = 10.1 * random.uniform(10, 10)
+            if mcs >= 600:
+                # use the modulos to control the individual cells in the list
+                # i.e. this controls the first macrophage (order is clockwise)
+                if current_MAC % 8 == 0:
+                    self.plot_win.add_data_point("Track",cell.xCOM,cell.yCOM)
+                    # force component pointing along X axis
+                    cell.lambdaVecX = 1.0 * mac_vec_X
+                    #cell.lambdaVecX = 10.1 * random.uniform(-0.5, 0)
 
-                # force component pointing along Y axis
-                #cell.lambdaVecX = 10.1 * mac_vectors[0][1]
-                cell.lambdaVecY = 10.1 * random.uniform(10, 10)
-            elif current_MAC % 8 == 1:
-                # force component pointing along X axis
-                cell.lambdaVecX = 10.1 * random.uniform(0, 0)
+                    # force component pointing along Y axis
+                    cell.lambdaVecY = 1.0 * mac_vec_Y
+                    #cell.lambdaVecY = 10.1 * random.uniform(0, 0)
+                    
+                    print("MAC POS: ", mac_X, mac_Y)
+                    print("EPI POS: ", closest_epi[0], closest_epi[1])
+                    print("VEC X: ", mac_vec_X)
+                    print("VEC Y: ", mac_vec_Y)
+                    
+                    
+                    
+                elif current_MAC % 8 == 1:
+                    # force component pointing along X axis
+                    cell.lambdaVecX = 1.0 * mac_vec_X
 
-                # force component pointing along Y axis
-                cell.lambdaVecY = 10.1 * random.uniform(0, 0)
-            elif current_MAC % 8 == 2:
-                # force component pointing along X axis
-                cell.lambdaVecX = 10.1 * random.uniform(0, 0)
+                    # force component pointing along Y axis
+                    cell.lambdaVecY = 1.0 * mac_vec_Y
+                elif current_MAC % 8 == 2:
+                    # force component pointing along X axis
+                    cell.lambdaVecX = 1.0 * mac_vec_X
 
-                # force component pointing along Y axis
-                cell.lambdaVecY = 10.1 * random.uniform(0, 0)
-            else:
-                # force component pointing along X axis
-                cell.lambdaVecX = 10.1 * random.uniform(lamX_lower_bound, lamX_upper_bound)
+                    # force component pointing along Y axis
+                    cell.lambdaVecY = 1.0 * mac_vec_Y
+                elif current_MAC % 8 == 3:
+                    # force component pointing along X axis
+                    cell.lambdaVecX = 1.0 * mac_vec_X
 
-                # force component pointing along Y axis
-                cell.lambdaVecY = 10.1 * random.uniform(lamY_lower_bound, lamX_upper_bound)
-            
+                    # force component pointing along Y axis
+                    cell.lambdaVecY = 1.0 * mac_vec_Y
+                elif current_MAC % 8 == 4:
+                    # force component pointing along X axis
+                    cell.lambdaVecX = 1.0 * mac_vec_X
+
+                    # force component pointing along Y axis
+                    cell.lambdaVecY = 1.0 * mac_vec_Y
+                elif current_MAC % 8 == 5:
+                    # force component pointing along X axis
+                    cell.lambdaVecX = 1.0 * mac_vec_X
+
+                    # force component pointing along Y axis
+                    cell.lambdaVecY = 1.0 * mac_vec_Y
+                elif current_MAC % 8 == 6:
+                    # force component pointing along X axis
+                    cell.lambdaVecX = 1.0 * mac_vec_X
+
+                    # force component pointing along Y axis
+                    cell.lambdaVecY = 1.0 * mac_vec_Y
+                elif current_MAC % 8 == 7:
+                    # force component pointing along X axis
+                    cell.lambdaVecX = 1.0 * mac_vec_X
+
+                    # force component pointing along Y axis
+                    cell.lambdaVecY = 1.0 * mac_vec_Y
+                
+                # else:
+                    # # force component pointing along X axis
+                    # cell.lambdaVecX = 10.1 * random.uniform(lamX_lower_bound, lamX_upper_bound)
+
+                    # # force component pointing along Y axis
+                    # cell.lambdaVecY = 10.1 * random.uniform(lamY_lower_bound, lamX_upper_bound)
+                
             
             
             current_MAC = current_MAC + 1
@@ -358,17 +401,34 @@ class PostionPlotSteppable(SteppableBasePy):
         # This is not really needed, can delete later same with code above that create the graph
         # just tracking the center of "MEM" type every 100th MCS
         if mcs % 10 == 0:
-            for cell in self.cell_list_by_type(self.MEM):
+            
+            current_MAC = 0
+            current_EPI = 0
+            
+            for cell in self.cell_list_by_type(self.MAC):
+                
+                if current_MAC % 8 == 0:
+                    self.plot_win.add_data_point("Track",cell.xCOM,cell.yCOM)
+                
+                current_MAC = current_MAC + 1
+                
+            
+            for cell in self.cell_list_by_type(self.EPI):
+                
+                self.plot_win.add_data_point("Track",cell.xCOM,cell.yCOM)
+                current_EPI = current_EPI + 1
+            
+            #for cell in self.cell_list_by_type(self.MEM):
                 # using the plot:
                 # THIS TRACKS THE CENTER OF MASS OF MEM
                 #self.plot_win.add_data_point("Track",cell.xCOM,cell.yCOM)
                 
                 # THIS TRACKS EACH PIXEL OF MEM
-                pixel_list = self.get_cell_pixel_list(cell)
-                for pixel_tracker_data in pixel_list:
-                    x = pixel_tracker_data.pixel.x
-                    y = pixel_tracker_data.pixel.y
-                    self.plot_win.add_data_point("Track",x,y)
+                # pixel_list = self.get_cell_pixel_list(cell)
+                # for pixel_tracker_data in pixel_list:
+                    # x = pixel_tracker_data.pixel.x
+                    # y = pixel_tracker_data.pixel.y
+                    # self.plot_win.add_data_point("Track",x,y)
                     
         if mcs % 100 == 0:
             self.plot_win.erase_all_data()
