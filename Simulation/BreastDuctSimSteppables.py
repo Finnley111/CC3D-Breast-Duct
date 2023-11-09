@@ -212,20 +212,39 @@ class CellMovementSteppable(SteppableBasePy):
             mac_X = cell.xCOM
             mac_Y = cell.yCOM
             # the initial value is set ridiculously high so it always passes the first if statement
-            closest_epi = [10000000, 10000000] # the closest epithelial cell to the current MAC, it will be appended to pos_of_closest_epis
+            # it is now set to the value of the position so it remain idle if there is nothing to go to, this is sus and might cause errors so be careful
+            closest_epi = [mac_X, mac_Y] # the closest epithelial cell to the current MAC, it will be appended to pos_of_closest_epis
             #print(mac_X, ' ', mac_Y)
             
             # get position of macrophages and then position of epithelial cells
             # then use distance formula on coords to find closest one
             
             for epi_cell in self.cell_list_by_type(self.EPI):
-                epi_X = epi_cell.xCOM
-                epi_Y = epi_cell.yCOM
+                # NEIGHBOUR TRACKING
+                epi_X = 0
+                epi_Y = 0
                 
-                if np.sqrt((epi_X - mac_X)**2+(epi_Y - mac_Y)**2) < np.sqrt((closest_epi[0] - mac_X)**2+(closest_epi[1] - mac_Y)**2):
+                neighbor_list = self.get_cell_neighbor_data_list(epi_cell)
+                neighbor_count_by_type_dict = neighbor_list.neighbor_count_by_type()
+                # print('Neighbor count for cell.id={} is {}'.format(epi_cell.id, neighbor_count_by_type_dict))
+                
+                if mcs >= 600:
+                    if 1 not in neighbor_count_by_type_dict:
+                        epi_X = epi_cell.xCOM
+                        epi_Y = epi_cell.yCOM
+                        print("############################")
+                        closest_epi[0] = epi_X
+                        closest_epi[1] = epi_Y
+                        
                     
-                    closest_epi[0] = epi_X
-                    closest_epi[1] = epi_Y
+                    
+                
+                    if np.sqrt((epi_X - mac_X)**2+(epi_Y - mac_Y)**2) < np.sqrt((closest_epi[0] - mac_X)**2+(closest_epi[1] - mac_Y)**2):
+                        
+                        closest_epi[0] = epi_X
+                        closest_epi[1] = epi_Y
+                        
+              
                     
             
             #print("MAC POS: ", mac_X, mac_Y)
@@ -233,10 +252,10 @@ class CellMovementSteppable(SteppableBasePy):
               
             # use -1 for the first index since the current MAC will always be the latest one added to pos_of _closest_epi  
             mac_vec_X = -1*(closest_epi[0] - mac_X)
-            mac_vec_Y = -1*(closest_epi[0] - mac_Y)
+            mac_vec_Y = -1*(closest_epi[1] - mac_Y)
             mac_vec = (mac_vec_X, mac_vec_Y)
-                        
             
+         
         # this loop is responsible for taking the values and actually moving the macrophages
         
             if mcs >= 600:
