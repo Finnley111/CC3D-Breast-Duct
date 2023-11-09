@@ -2,7 +2,7 @@ from cc3d.core.PySteppables import *
 import numpy as np
 import random
 
-
+# lab mem
 # This class is used to set the target volume of each cell type
 class ConstraintInitializerSteppable(SteppableBasePy):
     def __init__(self,frequency=1):
