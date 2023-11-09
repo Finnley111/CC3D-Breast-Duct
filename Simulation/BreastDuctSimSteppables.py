@@ -374,7 +374,8 @@ class CellMovementSteppable(SteppableBasePy):
         return
 
 
-####### THIS CLASS IS USED FOR THE GRAPH THAT SHOWS POSITION OF MEM ##########
+####### THIS CLASS IS USED FOR THE GRAPH THAT SHOWS POSITION OF MEM ############
+#graph for tracking#
 class PostionPlotSteppable(SteppableBasePy):
     
     def __init__(self, frequency=10):
