@@ -69,7 +69,7 @@
       <Energy Type1="MYO" Type2="MEM">10.0</Energy>
       <Energy Type1="MYO" Type2="MEM">10.0</Energy>
       <Energy Type1="MEM" Type2="MEM">10.0</Energy>
-      <Energy Type1="MEM" Type2="MAC">10.0</Energy>
+      <Energy Type1="MEM" Type2="MAC">200.0</Energy>
       <Energy Type1="MAC" Type2="MAC">10.0</Energy>
       <NeighborOrder>4</NeighborOrder>
    </Plugin>

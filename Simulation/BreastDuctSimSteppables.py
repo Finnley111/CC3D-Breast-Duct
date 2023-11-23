@@ -253,6 +253,15 @@ class CellMovementSteppable(SteppableBasePy):
             # use -1 for the first index since the current MAC will always be the latest one added to pos_of _closest_epi  
             mac_vec_X = -1*(closest_epi[0] - mac_X)
             mac_vec_Y = -1*(closest_epi[1] - mac_Y)
+            
+            
+            # this adds the radius around the what macrophages will target the EPI clumps
+            if mac_vec_X >= 20:
+                mac_vec_X = 0
+            
+            if mac_vec_Y >= 20:
+                mac_vec_Y = 0
+            
             mac_vec = (mac_vec_X, mac_vec_Y)
             
          
@@ -274,10 +283,7 @@ class CellMovementSteppable(SteppableBasePy):
                     print("MAC POS: ", mac_X, mac_Y)
                     print("EPI POS: ", closest_epi[0], closest_epi[1])
                     print("VEC X: ", mac_vec_X)
-                    print("VEC Y: ", mac_vec_Y)
-                    
-                    
-                    
+                    print("VEC Y: ", mac_vec_Y)    
                 elif current_MAC % 8 == 1:
                     # force component pointing along X axis
                     cell.lambdaVecX = 1.0 * mac_vec_X
@@ -331,48 +337,6 @@ class CellMovementSteppable(SteppableBasePy):
             
             
             current_MAC = current_MAC + 1
-            
-        
-        
-     
-     
-     
-     
-            
-        # count = 0
-        # # this loop is responsible for taking the values and actually moving the macrophages
-        # for cell in self.cell_list_by_type(self.MAC):
-            
-            # # use the modulos to control the individual cells in the list
-            # # i.e. this controls the first macrophage (order is clockwise)
-            # if count % 8 == 0:
-                # # force component pointing along X axis
-                # cell.lambdaVecX = 10.1 * mac_vectors[0][0]
-                # #cell.lambdaVecX = 10.1 * random.uniform(0, 0)
-
-                # # force component pointing along Y axis
-                # cell.lambdaVecX = 10.1 * mac_vectors[0][1]
-                # # cell.lambdaVecY = 10.1 * random.uniform(0, 0)
-            # elif count % 8 == 1:
-                # # force component pointing along X axis
-                # cell.lambdaVecX = 10.1 * random.uniform(0, 0)
-
-                # # force component pointing along Y axis
-                # cell.lambdaVecY = 10.1 * random.uniform(0, 0)
-            # elif count % 8 == 2:
-                # # force component pointing along X axis
-                # cell.lambdaVecX = 10.1 * random.uniform(0, 0)
-
-                # # force component pointing along Y axis
-                # cell.lambdaVecY = 10.1 * random.uniform(0, 0)
-            # else:
-                # # force component pointing along X axis
-                # cell.lambdaVecX = 10.1 * random.uniform(lamX_lower_bound, lamX_upper_bound)
-
-                # # force component pointing along Y axis
-                # cell.lambdaVecY = 10.1 * random.uniform(lamY_lower_bound, lamX_upper_bound)
-            
-            # count = count + 1
             
             
             
