@@ -11,7 +11,6 @@ class ConstraintInitializerSteppable(SteppableBasePy):
     def start(self):
 
         cellVol = 1000
-        
         #this controls what each cell types' target volume will be
         #i.e how big it will grow before stoping
         for cell in self.cell_list:
