@@ -23,10 +23,15 @@
       
       <!-- Listing all cell types in the simulation -->
       <CellType TypeId="0" TypeName="Medium"/>
+      <!-- Lumen -->
       <CellType TypeId="1" TypeName="LUM"/>
+      <!-- Epithelial -->
       <CellType TypeId="2" TypeName="EPI"/>
+      <!-- Myoepethelial -->
       <CellType TypeId="3" TypeName="MYO"/>
+      <!-- Membrane -->
       <CellType TypeId="4" TypeName="MEM"/>
+      <!-- Macrophage -->
       <CellType TypeId="5" TypeName="MAC"/>
    </Plugin>
    
