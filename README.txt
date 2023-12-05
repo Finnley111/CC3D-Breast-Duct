@@ -83,10 +83,16 @@ MitosisSteppable Class:
 - to modify the preliferation rates, change the if statements how it is described at the top of this section
 
 CellMovementSteppable Class:
-- 
+- Controls the movement of the MAC cells
+- For information on how to edit it, refer to the comments in the class
 
 PositionPlotSteppable Class:
--
+- This class is for testing purposes which was used for CellMovementSteppable Class
+- Editing it will not change the simulation so it is best to not touch it
+
+FocalPointPlasticity Class
+- This was going to be used to make MEM impermiable but was not used. It will be deleted in future versions
 
 
 MAIN PYTHON FILE:
+- this file should not be edited unless a new class is added to the python steppable file
