@@ -41,7 +41,8 @@ To run the simulation in terminal:
 
 NOTE ON CHANGING VALUES IN IF STATEMENTS:
 - mcs: the time step of the simulation when the event starts
-- 
+- random.random: generates a number between 0.0 and 1.0, to make an event more likely, make the number random.random must be less than greater
+- cell.volume: controls the size the cells must be for an event to happen
 
 XML FILE: 
 
@@ -78,7 +79,14 @@ GrowthSteppable Class:
 
 MitosisSteppable Class:
 - controls the preliferation of cells
+- the division of each cell type is in their own respective for loop
+- to modify the preliferation rates, change the if statements how it is described at the top of this section
+
+CellMovementSteppable Class:
 - 
+
+PositionPlotSteppable Class:
+-
 
 
 MAIN PYTHON FILE:
