@@ -61,7 +61,7 @@ class BreastDuctSim(SteppableBasePy):
             #print('Neighbor count for cell.id={} is {}'.format(cell.id, neighbor_count_by_type_dict))
             # cell is more likely to be killed if not neighboring the lumen
             if 1 not in neighbor_count_by_type_dict:
-                if random.random() < 0.01 and cell.volume > 15:
+                if random.random() < 0.01 and cell.volume > 20:
                     self.delete_cell(cell)
             
             if mcs > 1500 and random.random() < 0.0008 and cell.volume > 70:
@@ -99,6 +99,9 @@ class GrowthSteppable(SteppableBasePy):
         # and are capped by their target volume
         for cell in self.cell_list_by_type(self.EPI):
             cell.targetVolume += 0.05
+            #cell.targetSurface = 2.0*np.pi*np.sqrt(cell.targetVolume)
+        for cell in self.cell_list_by_type(self.MAC):
+            cell.targetVolume += 50
             #cell.targetSurface = 2.0*np.pi*np.sqrt(cell.targetVolume)
 
 
