@@ -100,6 +100,9 @@ class GrowthSteppable(SteppableBasePy):
         for cell in self.cell_list_by_type(self.EPI):
             cell.targetVolume += 0.05
             #cell.targetSurface = 2.0*np.pi*np.sqrt(cell.targetVolume)
+        for cell in self.cell_list_by_type(self.MAC):
+            cell.targetVolume += 50
+            #cell.targetSurface = 2.0*np.pi*np.sqrt(cell.targetVolume)
 
 
 
