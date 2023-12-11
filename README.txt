@@ -1,7 +1,7 @@
 ########### OPENING TWEDIT ###########
 
 1. open terminal
-2. type "cd CompuCell3D\"
+2. type "cd CompuCell3D/"
 3. type "./twedit++.command"
 4. CC3D project
 5. Open project
@@ -31,7 +31,7 @@ click open in player
 To run the simulation in terminal:
 
 1. open terminal
-2. type "cd CompuCell3D\"
+2. type "cd CompuCell3D/"
 3. type "./compucell3d.command"
 4. open the folder to run the simulation
 
