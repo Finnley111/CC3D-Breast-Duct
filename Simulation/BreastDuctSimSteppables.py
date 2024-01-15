@@ -2,7 +2,7 @@ from cc3d.core.PySteppables import *
 import numpy as np
 import random
 
-
+# lab mem
 # This class is used to set the target volume of each cell type
 class ConstraintInitializerSteppable(SteppableBasePy):
     def __init__(self,frequency=1):
@@ -11,7 +11,6 @@ class ConstraintInitializerSteppable(SteppableBasePy):
     def start(self):
 
         cellVol = 1000
-        
         #this controls what each cell types' target volume will be
         #i.e how big it will grow before stoping
         for cell in self.cell_list:
@@ -373,7 +372,8 @@ class CellMovementSteppable(SteppableBasePy):
         return
 
 
-####### THIS CLASS IS USED FOR THE GRAPH THAT SHOWS POSITION OF MEM ##########
+####### THIS CLASS IS USED FOR THE GRAPH THAT SHOWS POSITION OF MEM ############
+#graph for tracking#
 class PostionPlotSteppable(SteppableBasePy):
     
     def __init__(self, frequency=10):
