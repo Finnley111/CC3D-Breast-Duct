@@ -69,7 +69,7 @@
       <Energy Type1="EPI" Type2="EPI">10.0</Energy>
       <Energy Type1="EPI" Type2="MYO">10.0</Energy>
       <Energy Type1="EPI" Type2="MEM">50.0</Energy>
-      <Energy Type1="EPI" Type2="MAC">20.0</Energy>
+      <Energy Type1="EPI" Type2="MAC">0.0</Energy>
       <Energy Type1="MYO" Type2="MYO">10.0</Energy>
       <Energy Type1="MYO" Type2="MEM">10.0</Energy>
       <Energy Type1="MYO" Type2="MEM">10.0</Energy>
@@ -77,7 +77,7 @@
       <!-- This contact energy makes the membrane impermeable to MAC cells -->
       <Energy Type1="MEM" Type2="MAC">80.0</Energy> 
       <Energy Type1="MAC" Type2="MAC">10.0</Energy>
-      <Energy Type1="MAC" Type2="MYO">5.0</Energy>
+      <Energy Type1="MAC" Type2="MYO">10.0</Energy>
       <NeighborOrder>4</NeighborOrder>
    </Plugin>
    

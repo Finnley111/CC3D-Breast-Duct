@@ -44,9 +44,15 @@ class BreastDuctSim(SteppableBasePy):
     # CELL KILLER CODE/ LIMITS NUMBER OF EACH CELL TYPE 
     def step(self,mcs):
         for cell in self.cell_list_by_type(self.MEM):
-            print(cell.volume)
+            
+            num_mem = 0
+            
+            for cell in self.cell_list_by_type(self.MEM):
+                num_mem += 1
+            
             # mcs: the monty carlo step of the simulation (time)
-            if mcs > 1500 and random.random() < 0.0001 and cell.volume > 25:
+            if mcs > 1500 and random.random() < 0.001 and cell.volume > 10 and num_mem > 12:#cell volume was 10 before
+               print("PASSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS")
                self.delete_cell(cell)
                
         
