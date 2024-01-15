@@ -43,11 +43,26 @@ class BreastDuctSim(SteppableBasePy):
 
     # CELL KILLER CODE/ LIMITS NUMBER OF EACH CELL TYPE
     def step(self,mcs):
+        
+        # method for mem cell killer that uses number of cells instead of volume
         for cell in self.cell_list_by_type(self.MEM):
-            print(cell.volume)
+            
+            num_mem = 0
+            
+            for cell in self.cell_list_by_type(self.MEM):
+                num_mem += 1
+            
             # mcs: the monty carlo step of the simulation (time)
-            if mcs > 1500 and random.random() < 0.0001 and cell.volume > 25:
+            if mcs > 1500 and random.random() < 0.01 and cell.volume > 10 and num_mem > 12:#cell volume was 10 before
+               print("PASSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS")
                self.delete_cell(cell)
+        
+        
+        # for cell in self.cell_list_by_type(self.MEM):
+            # # print(cell.volume)
+            # # mcs: the monty carlo step of the simulation (time)
+            # if mcs > 650 and random.random() < 0.0005 and cell.volume > 25:
+               # self.delete_cell(cell)
                
         
         # tracks the neighbor types of each EPI cell
@@ -247,7 +262,7 @@ class CellMovementSteppable(SteppableBasePy):
                     if 1 not in neighbor_count_by_type_dict:
                         epi_X = epi_cell.xCOM
                         epi_Y = epi_cell.yCOM
-                        print("############################")
+                        #print("############################")
                         closest_epi[0] = epi_X
                         closest_epi[1] = epi_Y
                         
@@ -295,10 +310,10 @@ class CellMovementSteppable(SteppableBasePy):
                     cell.lambdaVecY = 1.0 * mac_vec_Y
                     #cell.lambdaVecY = 10.1 * random.uniform(0, 0)
                     
-                    print("MAC POS: ", mac_X, mac_Y)
-                    print("EPI POS: ", closest_epi[0], closest_epi[1])
-                    print("VEC X: ", mac_vec_X)
-                    print("VEC Y: ", mac_vec_Y)    
+                    # print("MAC POS: ", mac_X, mac_Y)
+                    # print("EPI POS: ", closest_epi[0], closest_epi[1])
+                    # print("VEC X: ", mac_vec_X)
+                    # print("VEC Y: ", mac_vec_Y)    
                 elif current_MAC % 8 == 1:
                     # force component pointing along X axis
                     cell.lambdaVecX = 1.0 * mac_vec_X
