@@ -188,13 +188,15 @@ class CellMovementSteppable(SteppableBasePy):
         '''
         called every MCS or every "frequency" MCS (depending how it was instantiated in the main Python file)
         '''
-        if mcs >= 600 and mcs <= 1000:
-            for cell in self.cell_list_by_type(self.MEM):
-                cell.targetVolume = cell.volume
-                cell.lambdaVolume = 100000
-                cell.targetSurface = cell.surface # only if you are using surface constraint
-                cell.lambdaSurface = 100000
-                #cell.lambdaVecX = 10.1 * random.uniform(-10.5, 0)
+        # freezes the membranes completely
+        
+        # if mcs >= 600 and mcs <= 1000:
+            # for cell in self.cell_list_by_type(self.MEM):
+                # cell.targetVolume = cell.volume
+                # cell.lambdaVolume = 100000
+                # cell.targetSurface = cell.surface # only if you are using surface constraint
+                # cell.lambdaSurface = 100000
+                # #cell.lambdaVecX = 10.1 * random.uniform(-10.5, 0)
                 
         
         # Make sure ExternalPotential plugin is loaded
