@@ -43,10 +43,19 @@ class BreastDuctSim(SteppableBasePy):
 
     # CELL KILLER CODE/ LIMITS NUMBER OF EACH CELL TYPE
     def step(self,mcs):
+        
+        
+        
         for cell in self.cell_list_by_type(self.MEM):
             
+            num_mem = 0
+            
+            for cell in self.cell_list_by_type(self.MEM):
+                num_mem += 1
+            
             # mcs: the monty carlo step of the simulation (time)
-            if mcs > 1500 and random.random() < 0.00001 and cell.volume > 10:
+            if mcs > 650 and random.random() < 0.01 and cell.volume > 1 and num_mem > 14:#cell volume was 10 before
+               print("PASSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS")
                self.delete_cell(cell)
                
         
@@ -247,7 +256,8 @@ class CellMovementSteppable(SteppableBasePy):
                     if 1 not in neighbor_count_by_type_dict:
                         epi_X = epi_cell.xCOM
                         epi_Y = epi_cell.yCOM
-                        print("############################")
+                        #this says whether or not its chasing a cell
+                        #print("######################")
                         closest_epi[0] = epi_X
                         closest_epi[1] = epi_Y
                         
@@ -295,10 +305,11 @@ class CellMovementSteppable(SteppableBasePy):
                     cell.lambdaVecY = 1.0 * mac_vec_Y
                     #cell.lambdaVecY = 10.1 * random.uniform(0, 0)
                     
-                    print("MAC POS: ", mac_X, mac_Y)
-                    print("EPI POS: ", closest_epi[0], closest_epi[1])
-                    print("VEC X: ", mac_vec_X)
-                    print("VEC Y: ", mac_vec_Y)    
+                    # prints the location and vectors of the cell
+                    # print("MAC POS: ", mac_X, mac_Y)
+                    # print("EPI POS: ", closest_epi[0], closest_epi[1])
+                    # print("VEC X: ", mac_vec_X)
+                    # print("VEC Y: ", mac_vec_Y)    
                 elif current_MAC % 8 == 1:
                     # force component pointing along X axis
                     cell.lambdaVecX = 1.0 * mac_vec_X
