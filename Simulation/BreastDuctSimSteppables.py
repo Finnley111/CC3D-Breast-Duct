@@ -41,7 +41,7 @@ class BreastDuctSim(SteppableBasePy):
         SteppableBasePy.__init__(self,frequency)
  
 
-    # CELL KILLER CODE/ LIMITS NUMBER OF EACH CELL TYPE
+    # CELL KILLER CODE/ LIMITS NUMBER OF EACH CELL TYPE 
     def step(self,mcs):
         
         # method for mem cell killer that uses number of cells instead of volume
