@@ -107,6 +107,7 @@
          <DecayCoefficient CellType="MAC">0.01</DecayCoefficient>
       </DiffusionData>
       <SecretionData>
+      <!-- abc -->
          <!-- When secretion is defined inside DissufionSolverFE all secretion constants are scaled automaticaly to account for the extra calls to the diffusion step when handling large diffusion constants -->
          <!-- Uniform secretion Definition -->
          <!-- <Secretion Type="LUM">0.1</Secretion> -->
