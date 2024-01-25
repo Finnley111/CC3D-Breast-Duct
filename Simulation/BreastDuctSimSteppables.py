@@ -11,7 +11,6 @@ class ConstraintInitializerSteppable(SteppableBasePy):
     def start(self):
 
         cellVol = 1000
-        
         #this controls what each cell types' target volume will be
         #i.e how big it will grow before stoping
         for cell in self.cell_list:
@@ -42,12 +41,18 @@ class BreastDuctSim(SteppableBasePy):
         SteppableBasePy.__init__(self,frequency)
  
 
-    # CELL KILLER CODE/ LIMITS NUMBER OF EACH CELL TYPE
+    # CELL KILLER CODE/ LIMITS NUMBER OF EACH CELL TYPE 
     def step(self,mcs):
         for cell in self.cell_list_by_type(self.MEM):
             
+            num_mem = 0
+            
+            for cell in self.cell_list_by_type(self.MEM):
+                num_mem += 1
+            
             # mcs: the monty carlo step of the simulation (time)
-            if mcs > 1500 and random.random() < 0.00001 and cell.volume > 10:
+            if mcs > 1500 and random.random() < 0.001 and cell.volume > 10 and num_mem > 12:#cell volume was 10 before
+               print("PASSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS")
                self.delete_cell(cell)
                
         
@@ -116,7 +121,7 @@ class MitosisSteppable(MitosisSteppableBase):
             neighbor_count_by_type_dict = neighbor_list.neighbor_count_by_type()
             
             # BEFORE 750 time steps the cells divide less frequently (helps control initial setup)
-            if mcs < 750 and cell.volume>100 and random.random() < 1:
+            if mcs < 750 and cell.volume>100 and random.random() < 0.01:
                 cells_to_divide.append(cell)
             elif cell.volume>100 and random.random() < 0.1:
                 cells_to_divide.append(cell)
@@ -189,6 +194,8 @@ class CellMovementSteppable(SteppableBasePy):
         '''
         called every MCS or every "frequency" MCS (depending how it was instantiated in the main Python file)
         '''
+        # freezes the membranes completely
+        
         # if mcs >= 600 and mcs <= 1000:
             # for cell in self.cell_list_by_type(self.MEM):
                 # cell.targetVolume = cell.volume
@@ -371,7 +378,8 @@ class CellMovementSteppable(SteppableBasePy):
         return
 
 
-####### THIS CLASS IS USED FOR THE GRAPH THAT SHOWS POSITION OF MEM ##########
+####### THIS CLASS IS USED FOR THE GRAPH THAT SHOWS POSITION OF MEM ############
+#graph for tracking#
 class PostionPlotSteppable(SteppableBasePy):
     
     def __init__(self, frequency=10):
