@@ -2,19 +2,17 @@ from cc3d.core.PySteppables import *
 import numpy as np
 import random
 
-# lab mem
-# This class is used to set the target volume of each cell type
+# This class is used to set the target volume of each cell type 
+# (Lab mem could change this to resize the cell)
 class ConstraintInitializerSteppable(SteppableBasePy):
     def __init__(self,frequency=1):
         SteppableBasePy.__init__(self,frequency)
 
     def start(self):
-
         cellVol = 1000
         #this controls what each cell types' target volume will be
         #i.e how big it will grow before stoping
         for cell in self.cell_list:
-            
             cell.lambdaVolume = 10
             if cell.type == self.LUM:
                 cell.targetVolume = .6*cellVol
@@ -27,35 +25,25 @@ class ConstraintInitializerSteppable(SteppableBasePy):
             if cell.type == self.MAC:
                 cell.targetVolume = .05*cellVol
                 
-                
-        
-        
-        
-            
-                
 
 class BreastDuctSim(SteppableBasePy):
 
     def __init__(self,frequency=1):
 
         SteppableBasePy.__init__(self,frequency)
- 
 
     # CELL KILLER CODE/ LIMITS NUMBER OF EACH CELL TYPE 
+    # (Lab mem could change this to kill specific type of cells) 
     def step(self,mcs):
         for cell in self.cell_list_by_type(self.MEM):
-            
             num_mem = 0
-            
             for cell in self.cell_list_by_type(self.MEM):
                 num_mem += 1
-            
+
             # mcs: the monty carlo step of the simulation (time)
             if mcs > 1500 and random.random() < 0.001 and cell.volume > 10 and num_mem > 12:#cell volume was 10 before
-               print("PASSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS")
                self.delete_cell(cell)
-               
-        
+
         # tracks the neighbor types of each EPI cell
         # will be used later to determine if there is a clump forming
         for cell in self.cell_list_by_type(self.EPI):
@@ -63,7 +51,7 @@ class BreastDuctSim(SteppableBasePy):
             neighbor_list = self.get_cell_neighbor_data_list(cell)
             neighbor_count_by_type_dict = neighbor_list.neighbor_count_by_type()
             
-            #print('Neighbor count for cell.id={} is {}'.format(cell.id, neighbor_count_by_type_dict))
+            # print('Neighbor count for cell.id={} is {}'.format(cell.id, neighbor_count_by_type_dict))
             # cell is more likely to be killed if not neighboring the lumen
             if 1 not in neighbor_count_by_type_dict:
                 if random.random() < 0.01 and cell.volume > 15:
@@ -98,14 +86,12 @@ class GrowthSteppable(SteppableBasePy):
         SteppableBasePy.__init__(self, frequency)
 
     def step(self, mcs):
-    
-        # controls the rate of growth of the EPI cells
-        # the other cells do not have a growth rate, they divide because of their initial volume
+        # (Lab mem could change the value to adjust the growth rate)
+        # controls the rate of growth of the EPI cells the other cells do not have a growth rate, they divide because of their initial volume
         # and are capped by their target volume
         for cell in self.cell_list_by_type(self.EPI):
             cell.targetVolume += 0.05
             #cell.targetSurface = 2.0*np.pi*np.sqrt(cell.targetVolume)
-
 
 
 class MitosisSteppable(MitosisSteppableBase):
@@ -139,14 +125,6 @@ class MitosisSteppable(MitosisSteppableBase):
                 cells_to_divide.append(cell)
 
         for cell in cells_to_divide:
-
-            # OTHER POSSIBLE WAYS TO DIVIDE CELLS
-            # self.divide_cell_random_orientation(cell)
-            # Other valid options
-            # self.divide_cell_orientation_vector_based(cell,1,1,0)
-            # self.divide_cell_along_minor_axis(cell)
-            
-           
             self.divide_cell_along_major_axis(cell)
             
             
@@ -157,14 +135,6 @@ class MitosisSteppable(MitosisSteppableBase):
         self.parent_cell.targetVolume /= 2                 
 
         self.clone_parent_2_child()            
-
-        # for more control of what gets copied from parent to child use cloneAttributes function
-        # self.clone_attributes(source_cell=self.parent_cell, target_cell=self.child_cell, no_clone_key_dict_list=[attrib1, attrib2]) 
-        
-        # if self.parent_cell.type==1:
-            # self.child_cell.type=2
-        # else:
-            # self.child_cell.type=1
 
 
 class CellMovementSteppable(SteppableBasePy):
@@ -194,8 +164,7 @@ class CellMovementSteppable(SteppableBasePy):
         '''
         called every MCS or every "frequency" MCS (depending how it was instantiated in the main Python file)
         '''
-        # freezes the membranes completely
-        
+        ########### freezes the membranes completely ##########
         # if mcs >= 600 and mcs <= 1000:
             # for cell in self.cell_list_by_type(self.MEM):
                 # cell.targetVolume = cell.volume
@@ -204,10 +173,6 @@ class CellMovementSteppable(SteppableBasePy):
                 # cell.lambdaSurface = 100000
                 # #cell.lambdaVecX = 10.1 * random.uniform(-10.5, 0)
                 
-        
-        # Make sure ExternalPotential plugin is loaded
-        # negative lambdaVecX makes force point in the positive direction
-        # THIS CONTROLS THE MOVEMENT OF THE MACROPHAGE
 
         # declaring variables that will be used to find the position of each macrophage
         mac_X = 0.0
@@ -253,7 +218,6 @@ class CellMovementSteppable(SteppableBasePy):
                     if 1 not in neighbor_count_by_type_dict:
                         epi_X = epi_cell.xCOM
                         epi_Y = epi_cell.yCOM
-                        print("############################")
                         closest_epi[0] = epi_X
                         closest_epi[1] = epi_Y
                         
@@ -422,18 +386,6 @@ class PostionPlotSteppable(SteppableBasePy):
                 
                 self.plot_win.add_data_point("Track",cell.xCOM,cell.yCOM)
                 current_EPI = current_EPI + 1
-            
-            #for cell in self.cell_list_by_type(self.MEM):
-                # using the plot:
-                # THIS TRACKS THE CENTER OF MASS OF MEM
-                #self.plot_win.add_data_point("Track",cell.xCOM,cell.yCOM)
-                
-                # THIS TRACKS EACH PIXEL OF MEM
-                # pixel_list = self.get_cell_pixel_list(cell)
-                # for pixel_tracker_data in pixel_list:
-                    # x = pixel_tracker_data.pixel.x
-                    # y = pixel_tracker_data.pixel.y
-                    # self.plot_win.add_data_point("Track",x,y)
                     
         if mcs % 100 == 0:
             self.plot_win.erase_all_data()
@@ -441,6 +393,12 @@ class PostionPlotSteppable(SteppableBasePy):
             self.plot_win.add_data_point("Track",0,  200)
             self.plot_win.add_data_point("Track",200,  0)
             self.plot_win.add_data_point("Track",200,200)
+
+
+
+
+
+
 
 
 ######### THIS CLASS WILL BE USED TO MANAGE THE LINKS IN THE PYTHON STEPPABLE ##########
