@@ -17,7 +17,7 @@ class ConstraintInitializerSteppable(SteppableBasePy):
             if cell.type == self.LUM:
                 cell.targetVolume = .6*cellVol
             if cell.type == self.EPI:
-                cell.targetVolume = .2*cellVol
+                cell.targetVolume = .3*cellVol
             if cell.type == self.MYO:
                 cell.targetVolume = .5*cellVol
             if cell.type == self.MEM:
@@ -95,7 +95,7 @@ class GrowthSteppable(SteppableBasePy):
         # controls the rate of growth of the EPI cells the other cells do not have a growth rate, they divide because of their initial volume
         # and are capped by their target volume
         for cell in self.cell_list_by_type(self.EPI):
-            if mcs <= 1500:
+            if mcs <= 3000:
                 cell.targetVolume += 0.05
             else:
                 cell.targetVolume += 0.0005
@@ -386,6 +386,17 @@ class GraphSteppable(SteppableBasePy):
         
         
         
+        if (self.output_dir is not None) and mcs == 1000:
+            # here we specify size of the image saved (1000x1000) - default is 400 x 400
+            # resizing of the image is not guaranteed to be implemented
+            png_output_path = Path(self.output_dir).joinpath("HistPlots_" + str(mcs) + ".png")
+            print(png_output_path)
+            self.plot_win.save_plot_as_png(png_output_path, 1000, 1000) 
+        
+        
+        
+        
+        
     
     
         
@@ -393,6 +404,8 @@ class GraphSteppable(SteppableBasePy):
         '''
         this gets called each time user stops simulation
         '''        
+        
+        
         
         return
    
