@@ -30,13 +30,16 @@ CompuCellSetup.register_steppable(steppable=MitosisSteppable(frequency=1))
 
 
 
-from BreastDuctSimSteppables import CellMovementSteppable
-CompuCellSetup.register_steppable(steppable=CellMovementSteppable(frequency=1))
+#from BreastDuctSimSteppables import CellMovementSteppable
+#CompuCellSetup.register_steppable(steppable=CellMovementSteppable(frequency=1))
 
 
         
-from BreastDuctSimSteppables import PostionPlotSteppable
-CompuCellSetup.register_steppable(steppable=PostionPlotSteppable(frequency=1))
+#from BreastDuctSimSteppables import PostionPlotSteppable
+#CompuCellSetup.register_steppable(steppable=PostionPlotSteppable(frequency=1))
+
+from BreastDuctSimSteppables import GraphSteppable
+CompuCellSetup.register_steppable(steppable=GraphSteppable(frequency=1))
 
 
         
