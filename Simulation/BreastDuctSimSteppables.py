@@ -19,20 +19,19 @@ class ConstraintInitializerSteppable(SteppableBasePy):
             if cell.type == self.LUM:
                 cell.targetVolume = .6*cellVol
             if cell.type == self.EPI:
-                cell.targetVolume = .4*cellVol
+                cell.targetVolume = .2*cellVol
             if cell.type == self.MYO:
                 cell.targetVolume = .5*cellVol
             if cell.type == self.MEM:
                 cell.targetVolume = .4*cellVol
             if cell.type == self.MAC:
                 cell.targetVolume = .05*cellVol
-                
-                
-        
-        
-        
-            
-                
+    
+   
+
+
+
+
 
 class BreastDuctSim(SteppableBasePy):
 
@@ -64,12 +63,12 @@ class BreastDuctSim(SteppableBasePy):
             neighbor_count_by_type_dict = neighbor_list.neighbor_count_by_type()
             
             #print('Neighbor count for cell.id={} is {}'.format(cell.id, neighbor_count_by_type_dict))
-            # cell is more likely to be killed if not neighboring the lumen
+            # cell is less likely to be killed if not neighboring the lumen
             if 1 not in neighbor_count_by_type_dict:
-                if random.random() < 0.01 and cell.volume > 15:
+                if random.random() < 0.0000001 and cell.volume > 15:
                     self.delete_cell(cell)
             
-            if mcs > 1500 and random.random() < 0.0008 and cell.volume > 70:
+            if mcs > 1500 and random.random() < 0.000008 and cell.volume > 70:
                self.delete_cell(cell)
                
         ############# NEIGHBOR TRACKING CODE FOR LATER USE #################
@@ -113,7 +112,7 @@ class MitosisSteppable(MitosisSteppableBase):
         MitosisSteppableBase.__init__(self,frequency)
 
     def step(self, mcs):
-
+        #print(len(self.cell_list_by_type(self.EPI)))
         cells_to_divide=[]
         # DIVISION OF EPI CELLS
         for cell in self.cell_list_by_type(self.EPI):
@@ -123,12 +122,12 @@ class MitosisSteppable(MitosisSteppableBase):
             # BEFORE 750 time steps the cells divide less frequently (helps control initial setup)
             if mcs < 750 and cell.volume>100 and random.random() < 0.01:
                 cells_to_divide.append(cell)
-            elif cell.volume>100 and random.random() < 0.1:
+            elif cell.volume>100 and random.random() < 0.1 and len(self.cell_list_by_type(self.EPI)) <= 10:
                 cells_to_divide.append(cell)
             # if the neighbor is not the lumen, the chance for division is greater to make the simulation show more results
-            elif 1 not in neighbor_count_by_type_dict:
-                if cell.volume>25 and random.random() < 0.8:
-                    cells_to_divide.append(cell)
+            # elif 1 not in neighbor_count_by_type_dict:
+                # if cell.volume>25 and random.random() < 0.8:
+                    # cells_to_divide.append(cell)
                 
         for cell in self.cell_list_by_type(self.MYO):
             if cell.volume>70: # the cell will divide if the cell has a volume greater than 70
