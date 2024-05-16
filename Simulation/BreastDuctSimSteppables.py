@@ -347,6 +347,55 @@ class CellMovementSteppable(SteppableBasePy):
         return
 
 
+
+class GraphSteppable(SteppableBasePy):
+    
+    def start(self):
+        # make a plot of the cells positions
+        self.plot_win = self.add_new_plot_window(title='MEM COM Track',
+                                                 x_axis_title='Time', x_scale_type='linear',
+                                                 y_axis_title='# of EPI not Neighbouring LUM', y_scale_type='linear',
+                                                 grid=False)
+        self.plot_win.add_plot("Track", style='Lines', color='white', size=1)
+        # make some dots to force the plot to autoscale like we want (0,0),(100,100)
+        # arguments are (name of the data series, x, y)
+        
+    def step(self, mcs):
+        
+        non_LUM_neighbour = []
+        
+        for cell in self.cell_list_by_type(self.EPI):
+            
+            neighbor_list = self.get_cell_neighbor_data_list(cell)
+            neighbor_count_by_type_dict = neighbor_list.neighbor_count_by_type()
+            
+            #print('Neighbor count for cell.id={} is {}'.format(cell.id, neighbor_count_by_type_dict))
+            if 1 not in neighbor_count_by_type_dict:
+                non_LUM_neighbour.append(cell)
+            
+        
+        
+        # arguments are (name of the data series, x, y)
+        self.plot_win.add_data_point("Track", mcs, len(non_LUM_neighbour))
+        
+        
+        
+    
+    
+        
+    def on_stop(self):
+        '''
+        this gets called each time user stops simulation
+        '''        
+        
+        return
+   
+    
+
+
+
+
+
 ####### THIS CLASS IS USED FOR THE GRAPH THAT SHOWS POSITION OF MEM ############
 #graph for tracking#
 class PostionPlotSteppable(SteppableBasePy):
