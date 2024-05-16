@@ -60,7 +60,7 @@
       <Energy Type1="Medium" Type2="EPI">70.0</Energy>
       <Energy Type1="Medium" Type2="MYO">30.0</Energy>
       <Energy Type1="Medium" Type2="MEM">10.0</Energy>
-      <Energy Type1="Medium" Type2="MAC">10.0</Energy>
+      <Energy Type1="Medium" Type2="MAC">20.0</Energy>
       <Energy Type1="LUM" Type2="LUM">10.0</Energy>
       <Energy Type1="LUM" Type2="EPI">10.0</Energy>
       <Energy Type1="LUM" Type2="MYO">70.0</Energy>
@@ -69,15 +69,15 @@
       <Energy Type1="EPI" Type2="EPI">10.0</Energy>
       <Energy Type1="EPI" Type2="MYO">10.0</Energy>
       <Energy Type1="EPI" Type2="MEM">50.0</Energy>
-      <Energy Type1="EPI" Type2="MAC">0.0</Energy>
+      <Energy Type1="EPI" Type2="MAC">5.0</Energy>
       <Energy Type1="MYO" Type2="MYO">10.0</Energy>
       <Energy Type1="MYO" Type2="MEM">10.0</Energy>
       <Energy Type1="MYO" Type2="MEM">10.0</Energy>
       <Energy Type1="MEM" Type2="MEM">10.0</Energy>
       <!-- This contact energy makes the membrane impermeable to MAC cells -->
       <Energy Type1="MEM" Type2="MAC">80.0</Energy> 
-      <Energy Type1="MAC" Type2="MAC">10.0</Energy>
-      <Energy Type1="MAC" Type2="MYO">10.0</Energy>
+      <Energy Type1="MAC" Type2="MAC">100.0</Energy>
+      <Energy Type1="MAC" Type2="MYO">5.0</Energy>
       <NeighborOrder>4</NeighborOrder>
    </Plugin>
    
@@ -107,6 +107,7 @@
          <DecayCoefficient CellType="MAC">0.01</DecayCoefficient>
       </DiffusionData>
       <SecretionData>
+      <!-- abc -->
          <!-- When secretion is defined inside DissufionSolverFE all secretion constants are scaled automaticaly to account for the extra calls to the diffusion step when handling large diffusion constants -->
          <!-- Uniform secretion Definition -->
          <!-- <Secretion Type="LUM">0.1</Secretion> -->
