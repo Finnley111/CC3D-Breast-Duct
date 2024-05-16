@@ -95,7 +95,13 @@ class GrowthSteppable(SteppableBasePy):
         # controls the rate of growth of the EPI cells the other cells do not have a growth rate, they divide because of their initial volume
         # and are capped by their target volume
         for cell in self.cell_list_by_type(self.EPI):
-            cell.targetVolume += 0.05
+            if mcs <= 1500:
+                cell.targetVolume += 0.05
+            else:
+                cell.targetVolume += 0.0005
+
+
+            
             #cell.targetSurface = 2.0*np.pi*np.sqrt(cell.targetVolume)
 
 
