@@ -384,13 +384,22 @@ class GraphSteppable(SteppableBasePy):
         # arguments are (name of the data series, x, y)
         self.plot_win.add_data_point("Track", mcs, len(non_LUM_neighbour))
         
+        png_output_path = Path(self.output_dir).parent
+        # want to save all plots to the same folder
+        png_output_path = png_output_path.joinpath("AA_Plots")
+
+        #change the name of the png based on the contact value
+        contact_changed = "EPI_to_EPI_"
+        contact_value = "10"
+        png_output_path = png_output_path.joinpath(contact_changed + contact_value + ".png")
         
+        
+        print(png_output_path)
         
         if (self.output_dir is not None) and mcs == 1000:
             # here we specify size of the image saved (1000x1000) - default is 400 x 400
             # resizing of the image is not guaranteed to be implemented
-            png_output_path = Path(self.output_dir).joinpath("HistPlots_" + str(mcs) + ".png")
-            print(png_output_path)
+            
             self.plot_win.save_plot_as_png(png_output_path, 1000, 1000) 
         
         
