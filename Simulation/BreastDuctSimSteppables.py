@@ -17,7 +17,7 @@ class ConstraintInitializerSteppable(SteppableBasePy):
             if cell.type == self.LUM:
                 cell.targetVolume = .6*cellVol
             if cell.type == self.EPI:
-                cell.targetVolume = .3*cellVol
+                cell.targetVolume = .35*cellVol
             if cell.type == self.MYO:
                 cell.targetVolume = .5*cellVol
             if cell.type == self.MEM:
@@ -118,9 +118,9 @@ class MitosisSteppable(MitosisSteppableBase):
             neighbor_count_by_type_dict = neighbor_list.neighbor_count_by_type()
             
             # BEFORE 750 time steps the cells divide less frequently (helps control initial setup)
-            if mcs < 750 and cell.volume>100 and random.random() < 0.01:
+            if mcs < 750 and cell.volume>95 and random.random() < 0.01:
                 cells_to_divide.append(cell)
-            elif cell.volume>100 and random.random() < 0.1 and len(self.cell_list_by_type(self.EPI)) <= 10:
+            elif cell.volume>95 and random.random() < 0.1 and len(self.cell_list_by_type(self.EPI)) <= 10:
                 cells_to_divide.append(cell)
             # if the neighbor is not the lumen, the chance for division is greater to make the simulation show more results
             # elif 1 not in neighbor_count_by_type_dict:
@@ -388,9 +388,9 @@ class GraphSteppable(SteppableBasePy):
         
 
         #change the name of the png based on the contact value
-        contact_changed = "EPI_to_EPI_"
-        contact_value = "10"
-        png_output_path = png_output_path.joinpath(contact_changed + contact_value + ".png")
+        contact_changed = "Mitosis_Volume_"
+        Volume = "95"
+        png_output_path = png_output_path.joinpath(contact_changed + Volume + ".png")
         
         
         print(png_output_path)
@@ -400,6 +400,7 @@ class GraphSteppable(SteppableBasePy):
             # resizing of the image is not guaranteed to be implemented
             
             self.plot_win.save_plot_as_png(png_output_path, 1000, 1000) 
+
         
         
         
